@@ -1,0 +1,38 @@
+{
+	"name": "beat-store",
+	"scripts": {
+		"dev": "next dev --turbo",
+		"build": "next build",
+		"start": "next build && tsx testServer.ts",
+		"lint": "next lint",
+		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
+		"test": "vitest",
+		"predeploy": "pnpm format && pnpm tsx predeploy/validateDockerfile.ts && pnpm lint && pnpm build",
+		"deploy": "fly deploy"
+	},
+	"dependencies": {
+		"chalk": "4",
+		"clsx": "^2.1.1",
+		"mongodb": "^6.10.0",
+		"next": "15.0.3",
+		"react": "19.0.0-rc-66855b96-20241106",
+		"react-dom": "19.0.0-rc-66855b96-20241106",
+		"sharp": "^0.33.5"
+	},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
+		"@types/express": "^4.17.21",
+		"@types/node": "^20.17.6",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"autoprefixer": "^10.4.20",
+		"dotenv": "^16.4.5",
+		"eslint": "^8",
+		"eslint-config-next": "15.0.3",
+		"express": "^4.21.1",
+		"postcss": "^8.4.48",
+		"tailwindcss": "^3.4.14",
+		"tsx": "^4.19.2",
+		"typescript": "^5.6.3"
+	}
+}
