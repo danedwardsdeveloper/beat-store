@@ -1,0 +1,58 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  customer
+  admin
+}
+
+enum ConfirmationStatus {
+  confirmed
+  pending
+}
+
+type SignInFailure {
+  count Int        @default(0)
+  dates DateTime[]
+}
+
+model User {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  role               UserRole           @default(customer)
+  confirmationStatus ConfirmationStatus @default(pending)
+  confirmationToken  String
+  marketingEmails    Boolean            @default(false)
+  firstName          String
+  lastName           String
+  email              String             @unique
+  hashedPassword     String
+  signInFails        SignInFailure?
+  orderIds           String[]           @db.ObjectId
+  orders             Order[]            @relation(fields: [orderIds], references: [id])
+  favouriteIds       String[]           @db.ObjectId
+  favourites         Beat[]             @relation(fields: [favouriteIds], references: [id])
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+}
+
+model Order {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userIds   String[] @db.ObjectId
+  users     User[]   @relation(fields: [userIds], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Beat {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  favouritedByIds String[] @db.ObjectId
+  favouritedBy    User[]   @relation(fields: [favouritedByIds], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+// pnpm dlx prisma db push
