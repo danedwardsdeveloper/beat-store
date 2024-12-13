@@ -1,0 +1,21 @@
+{
+  "singleQuote": true,
+  "semi": false,
+  "printWidth": 110,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-prisma"],
+  "importOrder": [
+    "^use client$",
+    "^(?!(?:./|../|@/))",
+    "^@/library/(.*)$",
+    ".*components.*$|^@/components/(.*)$",
+    "^(?!.*(components|public|image))(?:[../]|[./]|@/)",
+    ".*(public|image).*$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrderCaseInsensitive": true,
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"]
+}
