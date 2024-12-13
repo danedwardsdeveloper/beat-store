@@ -1,3 +1,33 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true,
+        "args": "none"
+      }
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": [
+      "error",
+      {
+        "builtinGlobals": true,
+        "hoist": "all",
+        // prettier-ignore
+        "allow": [
+        "context", "data", "description", "Document", "email", "error", "event", "global", 
+        "id", "Image", "message", "name", "params", "password", "path", "props", "query", 
+        "reject", "req", "Request", "res", "resolve", "Response", "result", "scrollY", 
+        "session", "status", "text", "title", "top", "type", "url", "user", "value"
+        ],
+        "ignoreTypeValueShadow": true,
+        "ignoreFunctionTypeParameterNameValueShadow": true
+      }
+    ]
+  }
 }
