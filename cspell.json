@@ -1,3 +1,10 @@
 {
-	"ignorePaths": ["pnpm-lock.yaml", ".dockerignore", ".gitignore"]
+	"ignorePaths": [
+		"pnpm-lock.yaml",
+		".dockerignore",
+		".gitignore"
+	],
+	"words": [
+		"beatstore"
+	]
 }
