@@ -75,14 +75,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<PostCreateAcc
       },
     })
 
-    const accessPayload = generateTokenPayload('access_token', user.id)
-    const accessToken = jwt.sign(accessPayload, jwtSecret)
-
-    const refreshPayload = generateTokenPayload('refresh_token', user.id)
-    const refreshToken = jwt.sign(refreshPayload, jwtSecret)
-
-    const accessCookie = createCookieOptions('access_token', accessToken)
-    const refreshCookie = createCookieOptions('refresh_token', refreshToken)
+    const tokenPayload = generateTokenPayload(user.id)
+    const signedToken = jwt.sign(tokenPayload, jwtSecret)
+    const tokenCookie = createCookieOptions(signedToken)
 
     const response = NextResponse.json(
       {
@@ -98,8 +93,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<PostCreateAcc
       },
     )
 
-    response.cookies.set(accessCookie)
-    response.cookies.set(refreshCookie)
+    response.cookies.set(tokenCookie)
 
     // Send confirmation email
 
