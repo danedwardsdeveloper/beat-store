@@ -20,15 +20,28 @@
 - [ ] `/beats/{beatId}/untagged-mp3` POST
 - [ ] `/beats/{beatId}/wav` POST
 - [ ] `/beats/{beatId}/stems` POST
-- [ ] `/beats` GET (All beats)
-- [ ] `/beats` PATCH (Update global pricing)
+
+## Get all beats
+
+- [ ] `/beats` GET
 
 ## Update site settings
 
 - [ ] `/update-settings` PATCH
+- [ ] `/beats` PATCH (Update global pricing)
 - [x] `/regenerate`
+
+# E-Commerce routes
+
+- [ ] create new order
+- [ ] add beat to order
+- [ ] `/orders/[userId]` get user's orders
+- [ ] `/checkout` start Stripe checkout session
+- [ ] `/webhook` add access to purchased items after checkout success
+- [ ] `/error??` handle failed payments
 
 # Site content
 
+- [ ] License types
 - [ ] Privacy policy
   - Log suspicious IP addresses with time frame
