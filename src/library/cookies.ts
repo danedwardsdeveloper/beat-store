@@ -6,7 +6,8 @@ if (!process.env.JWT_SECRET) {
 
 export const jwtSecret = process.env.JWT_SECRET
 
-export type CookieName = 'access_token' | 'refresh_token'
+export type CookieName = 'token'
+const twentyFourHoursInSeconds = 24 * 60 * 60
 
 type CookieOptions = {
   name: CookieName
@@ -18,27 +19,21 @@ type CookieOptions = {
   path: string
 }
 
-function setMaxAge(cookieName: CookieName) {
-  const oneHourInSeconds = 60 * 60
-  const oneWeekInSeconds = 7 * 24 * 60 * 60
-  return cookieName === 'access_token' ? oneHourInSeconds : oneWeekInSeconds
-}
-
-export function createCookieOptions(cookieName: CookieName, tokenValue: string): CookieOptions {
+export function createCookieOptions(tokenValue: string): CookieOptions {
   return {
-    name: cookieName,
+    name: 'token',
     value: tokenValue,
     httpOnly: true,
     secure: isProduction,
     sameSite: 'strict',
-    maxAge: setMaxAge(cookieName),
+    maxAge: twentyFourHoursInSeconds,
     path: '/',
   }
 }
 
-export function createClearCookieOptions(cookieName: CookieName): CookieOptions {
+export function createClearCookieOptions(): CookieOptions {
   return {
-    name: cookieName,
+    name: 'token',
     value: '',
     httpOnly: true,
     secure: isProduction,
@@ -53,9 +48,9 @@ export interface TokenPayload {
   exp: number
 }
 
-export function generateTokenPayload(cookieName: CookieName, userId: string): TokenPayload {
+export function generateTokenPayload(userId: string): TokenPayload {
   return {
     sub: userId,
-    exp: Math.floor(Date.now() / 1000) + setMaxAge(cookieName),
+    exp: Math.floor(Date.now() / 1000) + twentyFourHoursInSeconds,
   }
 }
