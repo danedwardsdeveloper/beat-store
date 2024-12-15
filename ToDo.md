@@ -12,22 +12,21 @@
 
 ## Upload a beat
 
-- [ ] `/beats/create-new` POST (Returns beat id)
+- [ ] `/beats/new` POST (Creates a new document, returns the beat id)
 - [ ] `/beats/{beatId}` PATCH (Update metadata, price etc.)
+- [ ] `/beats/{beatId}` DELETE
 - [ ] `/beats/{beatId}/artwork` POST
 - [ ] `/beats/{beatId}/tagged-mp3` POST
 - [ ] `/beats/{beatId}/untagged-mp3` POST
 - [ ] `/beats/{beatId}/wav` POST
 - [ ] `/beats/{beatId}/stems` POST
+- [ ] `/beats` GET (All beats)
+- [ ] `/beats` PATCH (Update global pricing)
 
 ## Update site settings
 
-- [ ] `/update-settings`
-- [ ] `api/admin/trigger-regeneration` (called from the client with paths to regenerate)
-- [ ] `api/regenerate`
-  - called from the server with a secret key in the URL
-  - Receives the paths to regenerate
-  - Checks for additional paths to generate from the SiteSettings database
+- [ ] `/update-settings` PATCH
+- [x] `/regenerate`
 
 # Site content
 
