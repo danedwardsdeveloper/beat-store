@@ -6,7 +6,7 @@ import { createCookieOptions, generateTokenPayload, jwtSecret } from '@/library/
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { SafeUser } from '@/app/api/types'
+import { SafeUser } from '@/app/api/types/apiEndpoints'
 
 export interface PostCreateAccountBody {
   email: string

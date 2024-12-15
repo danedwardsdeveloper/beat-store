@@ -7,7 +7,7 @@ import { generateTokenPayload } from '@/library/cookies'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { SafeUser } from '@/app/api/types'
+import { SafeUser } from '@/app/api/types/safeUser'
 
 export interface PostSignInBody {
   email: string
