@@ -3,33 +3,48 @@ import { NextRequest, NextResponse } from 'next/server'
 import { CookieName } from '@/library/cookies'
 import logger from '@/library/logger'
 
-import { validateToken } from '../validateToken'
-import { SafeUser } from '@/app/api/types'
+import validateToken, { TokenValidationResponse } from '../validateToken'
+import { HttpStatus } from '@/app/api/types/httpStatus'
 
-export interface ValidateTokenGETresponse {
-  isValid: boolean
-  user?: SafeUser
+export interface ValidateTokenResponseGET extends TokenValidationResponse {
+  message: 'token missing' | 'invalid token' | 'user not found' | 'success'
 }
 
-export async function GET(req: NextRequest): Promise<NextResponse<ValidateTokenGETresponse>> {
-  const accessToken = req.cookies.get('token' as CookieName)?.value
+export async function GET(request: NextRequest): Promise<NextResponse<ValidateTokenResponseGET>> {
+  const accessToken = request.cookies.get('token' as CookieName)?.value
 
   if (!accessToken) {
-    // logger
-    return NextResponse.json({ isValid: false }, { status: 401 })
+    logger.info('Access token not found')
+    return NextResponse.json(
+      { message: 'token missing', isValid: false },
+      { status: HttpStatus.http401unauthorised },
+    )
   }
 
   const { isValid, user } = await validateToken(accessToken)
 
-  // Split into two clearer responses
-  // logger
+  if (!isValid) {
+    logger.info('Invalid access token provided')
+    return NextResponse.json(
+      { message: 'invalid token', isValid: false },
+      { status: HttpStatus.http401unauthorised },
+    )
+  }
+
+  if (!user) {
+    logger.info('Token valid but no user data found')
+    return NextResponse.json(
+      { message: 'user not found', isValid: false },
+      { status: HttpStatus.http401unauthorised },
+    )
+  }
+
   return NextResponse.json(
     {
-      isValid: isValid,
+      message: 'success',
+      isValid: true,
       user,
-    } as ValidateTokenGETresponse,
-    {
-      status: isValid ? 200 : 401,
-    },
+    } as ValidateTokenResponseGET,
+    { status: HttpStatus.http200ok },
   )
 }
