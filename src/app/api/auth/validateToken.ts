@@ -4,9 +4,14 @@ import { jwtSecret, TokenPayload } from '@/library/cookies'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { ValidateTokenGETresponse } from './validate-token/route'
+import { SafeUser } from '@/app/api/types/apiEndpoints'
 
-export async function validateToken(accessToken: string): Promise<ValidateTokenGETresponse> {
+export interface TokenValidationResponse {
+  isValid: boolean
+  user?: SafeUser
+}
+
+export default async function validateToken(accessToken: string): Promise<TokenValidationResponse> {
   try {
     const decoded = jwt.verify(accessToken, jwtSecret) as TokenPayload
 
@@ -16,7 +21,7 @@ export async function validateToken(accessToken: string): Promise<ValidateTokenG
     })
 
     if (!existingUser) {
-      // logger
+      logger.info(`User with id: ${decoded.sub} not found in database`)
       return { isValid: false }
     }
 
