@@ -12,18 +12,20 @@
 
 ## Upload a beat
 
-- [ ] `/beats/new` POST (Creates a new document, returns the beat id)
-- [ ] `/beats/{beatId}` PATCH (Update metadata, price etc.)
-- [ ] `/beats/{beatId}` DELETE
-- [ ] `/beats/{beatId}/artwork` POST
-- [ ] `/beats/{beatId}/tagged-mp3` POST
-- [ ] `/beats/{beatId}/untagged-mp3` POST
-- [ ] `/beats/{beatId}/wav` POST
-- [ ] `/beats/{beatId}/stems` POST
+- [ ] `/admin/beats` POST (Creates a new Beat document, returns the beat id)
+- [ ] `/admin/beats` GET Published, scheduled and draft beats
+- [ ] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
+- [ ] `/admin/beats/{beatId}` DELETE
+- [ ] `/admin/beats/{beatId}/artwork` POST
+- [ ] `/admin/beats/{beatId}/tagged-mp3` POST
+- [ ] `/admin/beats/{beatId}/untagged-mp3` POST
+- [ ] `/admin/beats/{beatId}/wav` POST
+- [ ] `/admin/beats/{beatId}/stems` POST
 
-## Get all beats
+## Retrieve beats
 
-- [ ] `/beats` GET
+- [ ] `/beats` GET all published beats
+- [ ] `/beats/{beatId}` GET - Public beat details for individual beat
 
 ## Update site settings
 
