@@ -12,8 +12,10 @@
 
 ## Upload a beat
 
-- [ ] `/admin/beats` POST (Creates a new Beat document, returns the beat id)
-- [ ] `/admin/beats` GET Published, scheduled and draft beats
+- [ ] Create SafePublicBeat interface
+
+- [x] `/admin/beats` POST (Creates a new Beat document, returns the beat id)
+- [x] `/admin/beats` GET Published, scheduled and draft beats
 - [ ] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
 - [ ] `/admin/beats/{beatId}` DELETE
 - [ ] `/admin/beats/{beatId}/artwork` POST
