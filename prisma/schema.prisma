@@ -7,6 +7,158 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  role               UserRole           @default(customer)
+  confirmationStatus ConfirmationStatus @default(pending)
+  confirmationToken  String
+  marketingEmails    Boolean            @default(false)
+  firstName          String
+  lastName           String
+  email              String             @unique
+  hashedPassword     String
+  signInFails        SignInFailure?
+  orders             Order[]
+  favouriteIds       String[]           @db.ObjectId
+  favourites         Beat[]             @relation(fields: [favouriteIds], references: [id])
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@map("users")
+}
+
+model Beat {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String   @default("")
+  metaTitle       String   @default("")
+  description     String[] @default([""])
+  metaDescription String   @default("")
+  isHidden        Boolean  @default(true)
+  isDraft         Boolean  @default(true)
+  releaseDate     DateTime @default(now())
+  basicSales      Int      @default(0)
+  premiumSales    Int      @default(0)
+  unlimitedSales  Int      @default(0)
+  isExclusiveSold Boolean  @default(false)
+
+  // Musical info 
+  duration         Int?
+  bpm              Int?
+  musicalKeyLetter MusicalKeyLetter?
+  tonality         Tonality?
+  genres           String[]          @default([])
+  instruments      String[]          @default([])
+  soundsLike       String[]          @default([])
+  tags             String[]          @default([])
+
+  // Pricing
+  useDefaultPrices     Boolean   @default(true)
+  customPriceBasic     Int?
+  customPricePremium   Int?
+  customPriceUnlimited Int?
+  customPriceExclusive Int?
+  discountPercentage   Int?
+  discountExpiresAt    DateTime?
+
+  // Assets
+  fullSizeArtworkKey String?
+  thumbnailKey       String?
+  socialPhotoKey     String?
+  taggedMp3Key       String?
+  untaggedMp3Key     String?
+  wavKey             String?
+  zippedStemsKey     String?
+
+  // Analytics
+  playCount      Int @default(0)
+  favouriteCount Int @default(0)
+
+  // Relations
+  favouritedByIds String[] @default([]) @db.ObjectId
+  favouritedBy    User[]   @relation(fields: [favouritedByIds], references: [id])
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("beats")
+}
+
+model SiteSettings {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  companyName     String
+  tagLine         String
+  aboutParagraphs String[]
+
+  companyLogoKey String
+  heroImageKey   String
+
+  basicContractDetails     String[]
+  premiumContractDetails   String[]
+  unlimitedContractDetails String[]
+  exclusiveContractDetails String[]
+
+  artists     String[] // ['Ava Max', 'Dua Lipa']
+  tags        String[] // ['Christmas', 'Dark', 'Happy', 'Sad']
+  genres      String[] // ['EDM', 'Pop', 'RnB']
+  instruments String[] // ['Piano', 'Guitar', 'Synth']
+
+  defaultPriceInCentsBasic     Int @default(3500)
+  defaultPriceInCentsPremium   Int @default(8000)
+  defaultPriceInCentsUnlimited Int @default(10000)
+  defaultPriceInCentsExclusive Int @default(30000)
+
+  discountCodes DiscountCode[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model DiscountCode {
+  id                     String        @id @default(auto()) @map("_id") @db.ObjectId
+  code                   String        @unique
+  type                   DiscountType
+  discount               Int
+  startDate              DateTime
+  endDate                DateTime?
+  minimumPurchaseInCents Int?
+  maxGlobalUses          Int?
+  globalUseCount         Int           @default(0)
+  applicableLicenses     LicenseType[]
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  SiteSettings   SiteSettings? @relation(fields: [siteSettingsId], references: [id])
+  siteSettingsId String?       @db.ObjectId
+
+  @@map("discount_codes")
+}
+
+model Order {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  customerId      String      @db.ObjectId
+  purchaseDate    DateTime    @default(now())
+  items           OrderItem[]
+  discountCodes   String[]
+  subtotalInCents Int
+  totalInCents    Int
+  status          OrderStatus
+
+  customer  User     @relation(fields: [customerId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@map("orders")
+}
+
+type OrderItem {
+  beatId           String
+  licenseType      LicenseType
+  basePriceInCents Int
+}
+
 enum UserRole {
   customer
   admin
@@ -22,37 +174,39 @@ type SignInFailure {
   dates DateTime[]
 }
 
-model User {
-  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
-  role               UserRole           @default(customer)
-  confirmationStatus ConfirmationStatus @default(pending)
-  confirmationToken  String
-  marketingEmails    Boolean            @default(false)
-  firstName          String
-  lastName           String
-  email              String             @unique
-  hashedPassword     String
-  signInFails        SignInFailure?
-  orderIds           String[]           @db.ObjectId
-  orders             Order[]            @relation(fields: [orderIds], references: [id])
-  favouriteIds       String[]           @db.ObjectId
-  favourites         Beat[]             @relation(fields: [favouriteIds], references: [id])
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+enum DiscountType {
+  percentage
+  absolute
 }
 
-model Order {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userIds   String[] @db.ObjectId
-  users     User[]   @relation(fields: [userIds], references: [id])
-  createdAt DateTime @default(now())
+enum LicenseType {
+  basic
+  premium
+  unlimited
+  exclusive
 }
 
-model Beat {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  favouritedByIds String[] @db.ObjectId
-  favouritedBy    User[]   @relation(fields: [favouritedByIds], references: [id])
-  createdAt       DateTime @default(now())
+enum MusicalKeyLetter {
+  A
+  B
+  C
+  D
+  E
+  F
+  G
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum Tonality {
+  major
+  minor
+  modal
 }
 
 // pnpm dlx prisma db push
