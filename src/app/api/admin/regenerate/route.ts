@@ -6,15 +6,10 @@ import logger from '@/library/logger'
 
 import validateToken from '@/app/api/auth/validateToken'
 import { HttpStatus } from '@/app/api/types/httpStatus'
+import { AuthResponses, BasicResponses } from '@/app/api/types/responseMessages'
 
 export interface RegenerateResponsePOST {
-  message:
-    | 'token missing' //
-    | 'invalid token'
-    | 'user not found'
-    | 'unauthorised'
-    | 'regeneration failed'
-    | 'success'
+  message: BasicResponses | AuthResponses | 'regeneration failed'
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<RegenerateResponsePOST>> {
@@ -22,10 +17,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Regenerat
 
   if (!accessToken) {
     logger.info('Access token not found')
-    return NextResponse.json(
-      { message: 'token missing', isValid: false },
-      { status: HttpStatus.http401unauthorised },
-    )
+    return NextResponse.json({ message: 'token missing' }, { status: HttpStatus.http401unauthorised })
   }
 
   const { isValid, user } = await validateToken(accessToken)
