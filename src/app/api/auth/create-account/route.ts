@@ -6,9 +6,9 @@ import { createCookieOptions, generateTokenPayload, jwtSecret } from '@/library/
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { SafeUser } from '@/app/api/types/apiEndpoints'
+import { SafeUser } from '@/app/api/types/safeUser'
 
-export interface PostCreateAccountBody {
+export interface CreateAccountBodyPOST {
   email: string
   password: string
   firstName: string
@@ -16,7 +16,7 @@ export interface PostCreateAccountBody {
   marketingEmails: boolean
 }
 
-export interface PostCreateAccountResponse {
+export interface CreateAccountResponsePOST {
   message:
     | 'email missing'
     | 'password missing'
@@ -29,9 +29,9 @@ export interface PostCreateAccountResponse {
   user?: SafeUser
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<PostCreateAccountResponse>> {
+export async function POST(req: NextRequest): Promise<NextResponse<CreateAccountResponsePOST>> {
   try {
-    const body: PostCreateAccountBody = await req.json()
+    const body: CreateAccountBodyPOST = await req.json()
     const { email, password, firstName, lastName, marketingEmails } = body
 
     switch (true) {
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<PostCreateAcc
           firstName: user.firstName,
           role: user.role,
         },
-      } as PostCreateAccountResponse,
+      } as CreateAccountResponsePOST,
       {
         status: 200,
       },
