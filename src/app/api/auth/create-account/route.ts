@@ -30,9 +30,9 @@ export interface CreateAccountResponsePOST {
   user?: SafeUser
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<CreateAccountResponsePOST>> {
+export async function POST(request: NextRequest): Promise<NextResponse<CreateAccountResponsePOST>> {
   try {
-    const body: CreateAccountBodyPOST = await req.json()
+    const body: CreateAccountBodyPOST = await request.json()
     const { email, password, firstName, lastName, marketingEmails } = body
 
     switch (true) {
