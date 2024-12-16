@@ -1,3 +1,6 @@
+import { Beat } from '@prisma/client'
+
+import { BeatsResponsePATCH } from '../admin/beats/[beatId]/route'
 import { AdminBeatsResponseGET, AdminBeatsResponsePOST } from '../admin/beats/route'
 import { RegenerateResponsePOST } from '@/app/api/admin/regenerate/route'
 import { CreateAccountBodyPOST, CreateAccountResponsePOST } from '@/app/api/auth/create-account/route'
@@ -35,5 +38,9 @@ export interface ApiEndpoints {
   '/api/admin/beats': {
     responsePOST: AdminBeatsResponsePOST
     responseGET: AdminBeatsResponseGET
+  }
+  '/api/admin/beats/[beatId]': {
+    body: Beat
+    response: BeatsResponsePATCH
   }
 }
