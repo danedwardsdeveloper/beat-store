@@ -9,12 +9,12 @@ import logger from '@/library/logger'
 
 import { SafeUser } from '@/app/api/types/safeUser'
 
-export interface PostSignInBody {
+export interface SignInBodyPOST {
   email: string
   password: string
 }
 
-export interface PostSignInResponse {
+export interface SignInResponsePOST {
   message:
     | 'email missing'
     | 'password missing'
@@ -25,9 +25,9 @@ export interface PostSignInResponse {
   user?: SafeUser
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<PostSignInResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse<SignInResponsePOST>> {
   try {
-    const body: PostSignInBody = await req.json()
+    const body: SignInBodyPOST = await request.json()
     const { email, password } = body
 
     if (!email) {
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<PostSignInRes
           role: user.role,
           confirmationStatus: user.confirmationStatus,
         },
-      } as PostSignInResponse,
+      } as SignInResponsePOST,
       {
         status: 200,
       },
