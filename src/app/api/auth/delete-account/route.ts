@@ -5,7 +5,7 @@ import { CookieName, createClearCookieOptions, jwtSecret, TokenPayload } from '@
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-export interface DeleteDeleteAccountResponse {
+export interface DeleteAccountResponseDELETE {
   message:
     | 'success' //
     | 'token missing'
@@ -15,7 +15,7 @@ export interface DeleteDeleteAccountResponse {
     | 'server error'
 }
 
-export async function DELETE(request: NextRequest): Promise<NextResponse<DeleteDeleteAccountResponse>> {
+export async function DELETE(request: NextRequest): Promise<NextResponse<DeleteAccountResponseDELETE>> {
   try {
     const token = request.cookies.get('token' as CookieName)?.value
 
@@ -42,7 +42,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<DeleteD
     }
 
     const response = NextResponse.json(
-      { message: 'success' } as DeleteDeleteAccountResponse, //
+      { message: 'success' } as DeleteAccountResponseDELETE, //
       { status: 200 },
     )
     response.cookies.set('token' as CookieName, '', createClearCookieOptions())
