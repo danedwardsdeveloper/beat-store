@@ -1,7 +1,7 @@
 import { RegenerateResponsePOST } from '@/app/api/admin/regenerate/route'
-import { PostCreateAccountBody, PostCreateAccountResponse } from '@/app/api/auth/create-account/route'
-import { DeleteDeleteAccountResponse } from '@/app/api/auth/delete-account/route'
-import { PostSignInBody, PostSignInResponse } from '@/app/api/auth/sign-in/route'
+import { CreateAccountBodyPOST, CreateAccountResponsePOST } from '@/app/api/auth/create-account/route'
+import { DeleteAccountResponseDELETE } from '@/app/api/auth/delete-account/route'
+import { SignInBodyPOST, SignInResponsePOST } from '@/app/api/auth/sign-in/route'
 import { SignOutResponseGET } from '@/app/api/auth/sign-out/route'
 import { ValidateTokenResponseGET } from '@/app/api/auth/validate-token/route'
 
@@ -10,25 +10,33 @@ export const apiPaths = Object.freeze(
 ) as { [K in keyof ApiEndpoints]: K }
 
 export interface ApiEndpoints {
+  // AUTH
   '/api/auth/create-account': {
-    body: PostCreateAccountBody
-    response: PostCreateAccountResponse
+    body: CreateAccountBodyPOST
+    response: CreateAccountResponsePOST
   }
   '/api/auth/sign-in': {
-    body: PostSignInBody
-    response: PostSignInResponse
+    body: SignInBodyPOST
+    response: SignInResponsePOST
   }
   '/api/auth/sign-out': {
-    body: PostSignInBody
     response: SignOutResponseGET
   }
   '/api/auth/delete-account': {
-    response: DeleteDeleteAccountResponse
+    response: DeleteAccountResponseDELETE
   }
   '/api/auth/validate-token': {
     response: ValidateTokenResponseGET
   }
+
   '/api/admin/regenerate': {
     response: RegenerateResponsePOST
+  }
+  '/api/admin/beats': {
+    responseGET: null
+    bodyGET: null
+
+    responsePOST: null
+    bodyPOST: null
   }
 }
