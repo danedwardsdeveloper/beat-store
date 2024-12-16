@@ -1,3 +1,4 @@
+import { AdminBeatsResponseGET, AdminBeatsResponsePOST } from '../admin/beats/route'
 import { RegenerateResponsePOST } from '@/app/api/admin/regenerate/route'
 import { CreateAccountBodyPOST, CreateAccountResponsePOST } from '@/app/api/auth/create-account/route'
 import { DeleteAccountResponseDELETE } from '@/app/api/auth/delete-account/route'
@@ -10,7 +11,6 @@ export const apiPaths = Object.freeze(
 ) as { [K in keyof ApiEndpoints]: K }
 
 export interface ApiEndpoints {
-  // AUTH
   '/api/auth/create-account': {
     body: CreateAccountBodyPOST
     response: CreateAccountResponsePOST
@@ -33,10 +33,7 @@ export interface ApiEndpoints {
     response: RegenerateResponsePOST
   }
   '/api/admin/beats': {
-    responseGET: null
-    bodyGET: null
-
-    responsePOST: null
-    bodyPOST: null
+    responsePOST: AdminBeatsResponsePOST
+    responseGET: AdminBeatsResponseGET
   }
 }
