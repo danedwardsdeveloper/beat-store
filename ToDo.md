@@ -8,15 +8,13 @@
 - [ ] `/reset-password`
 - [ ] `/sign-out`
 
-# /admin
-
-## Upload a beat
+## Admin beats
 
 - [ ] Create SafePublicBeat interface
 
 - [x] `/admin/beats` POST (Creates a new Beat document, returns the beat id)
 - [x] `/admin/beats` GET Published, scheduled and draft beats
-- [ ] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
+- [x] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
 - [ ] `/admin/beats/{beatId}` DELETE
 - [ ] `/admin/beats/{beatId}/artwork` POST
 - [ ] `/admin/beats/{beatId}/tagged-mp3` POST
@@ -24,15 +22,19 @@
 - [ ] `/admin/beats/{beatId}/wav` POST
 - [ ] `/admin/beats/{beatId}/stems` POST
 
-## Retrieve beats
+## Signed-in beats
+
+- Not sure of these paths yet
+- [ ] `/user/beats/{beatId}` PATCH. Add favourite
+
+## Signed-out beats (Public)
 
 - [ ] `/beats` GET all published beats
-- [ ] `/beats/{beatId}` GET - Public beat details for individual beat
+- [ ] `/beats/{beatId}` PATCH. Increment play count
 
 ## Update site settings
 
 - [ ] `/update-settings` PATCH
-- [ ] `/beats` PATCH (Update global pricing)
 - [x] `/regenerate`
 
 # E-Commerce routes
