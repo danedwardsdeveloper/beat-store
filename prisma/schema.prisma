@@ -42,7 +42,7 @@ model Beat {
   isExclusiveSold Boolean  @default(false)
 
   // Musical info 
-  duration         Int?
+  duration         Int? // Get this from audio upload
   bpm              Int?
   musicalKeyLetter MusicalKeyLetter?
   tonality         Tonality?
@@ -68,6 +68,9 @@ model Beat {
   untaggedMp3Key     String?
   wavKey             String?
   zippedStemsKey     String?
+
+  // file size for each audio asset
+  // uploaded boolean for artwork, taggedMp3, untaggedMp3, wav & zippedStems
 
   // Analytics
   playCount      Int @default(0)
