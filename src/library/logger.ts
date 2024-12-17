@@ -1,16 +1,19 @@
 /* eslint-disable no-console */
-import { isProduction } from './environment'
+import chalk from 'chalk'
 
-type LogArgs = unknown[]
-
-const noop = (): void => {}
+import { isProduction } from '@/library/environment'
 
 const logger = {
-  debug: isProduction ? noop : (...args: LogArgs): void => console.debug('[DEBUG]', ...args),
-  info: isProduction ? noop : (...args: LogArgs): void => console.info('[INFO]', ...args),
-  warn: isProduction ? noop : (...args: LogArgs): void => console.warn('[WARN]', ...args),
-  error: (...args: LogArgs): void => console.error('[ERROR]', ...args),
+  debug: isProduction
+    ? (): void => {}
+    : (...args: unknown[]): void => console.debug(chalk.gray('[DEBUG]', ...args)),
+  info: isProduction
+    ? (): void => {}
+    : (...args: unknown[]): void => console.info(chalk.blue('[INFO]', ...args)),
+  warn: isProduction
+    ? (): void => {}
+    : (...args: unknown[]): void => console.warn(chalk.yellow('[WARN]', ...args)),
+  error: (...args: unknown[]): void => console.error(chalk.red('[ERROR]'), ...args),
 } as const
 
-export type Logger = typeof logger
 export default logger
