@@ -7,7 +7,7 @@ import { generateTokenPayload } from '@/library/cookies'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { SafeUser } from '@/app/api/types/safeUser'
+import { SafeUser } from '@/app/api/types'
 
 export interface SignInBodyPOST {
   email: string
@@ -60,6 +60,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<SignInRes
     const tokenPayload = generateTokenPayload(user.id)
     const signedToken = jwt.sign(tokenPayload, jwtSecret)
     const tokenCookie = createCookieOptions(signedToken)
+
+    // Sync local cart with database cart
 
     const response = NextResponse.json(
       {
