@@ -1,3 +1,9 @@
+# Current task
+
+Set up S3 and cloudfront so I can get this route working
+`/admin/beats/{beatId}/media` POST
+Then create some audio files to upload
+
 # /auth
 
 - [x] `/sign-in`
@@ -11,16 +17,13 @@
 ## Admin beats
 
 - [ ] Create SafePublicBeat interface
+- [ ] Find solution for dynamic segment path type safety `/api/admin/beats/[beatId]`
 
 - [x] `/admin/beats` POST (Creates a new Beat document, returns the beat id)
 - [x] `/admin/beats` GET Published, scheduled and draft beats
 - [x] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
-- [ ] `/admin/beats/{beatId}` DELETE
-- [ ] `/admin/beats/{beatId}/artwork` POST
-- [ ] `/admin/beats/{beatId}/tagged-mp3` POST
-- [ ] `/admin/beats/{beatId}/untagged-mp3` POST
-- [ ] `/admin/beats/{beatId}/wav` POST
-- [ ] `/admin/beats/{beatId}/stems` POST
+- [x] `/admin/beats/{beatId}` DELETE
+- [ ] `/admin/beats/{beatId}/media` POST
 
 ## Signed-in beats
 
@@ -29,8 +32,8 @@
 
 ## Signed-out beats (Public)
 
-- [ ] `/beats` GET all published beats
-- [ ] `/beats/{beatId}` PATCH. Increment play count
+- [x] `/beats` GET all published beats
+- [ ] `/beats/{beatId}` PATCH. Increment play count ?? Not sure this is public...?
 
 ## Update site settings
 
