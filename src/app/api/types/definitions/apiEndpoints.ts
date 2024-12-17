@@ -1,5 +1,6 @@
 import { Beat } from '@prisma/client'
 
+import { AdminBeatsAssetsBodyPOST } from '@/app/api/admin/beats/[beatId]/assets/route'
 import { BeatsResponseDELETE, BeatsResponsePATCH } from '@/app/api/admin/beats/[beatId]/route'
 import { AdminBeatsResponseGET, AdminBeatsResponsePOST } from '@/app/api/admin/beats/route'
 import { RegenerateResponsePOST } from '@/app/api/admin/regenerate/route'
@@ -41,6 +42,10 @@ export interface ApiEndpoints {
       bodyPATCH: Beat
       responsePATCH: BeatsResponsePATCH
       responseDELETE: BeatsResponseDELETE
+      '/assets': {
+        body: AdminBeatsAssetsBodyPOST
+        response: AdminBeatsAssetsBodyPOST
+      }
     }
   }
   '/api/beats': {
