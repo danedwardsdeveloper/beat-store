@@ -1,7 +1,7 @@
 import formData from 'form-data'
 import Mailgun, { MailgunMessageData, MessagesSendResult } from 'mailgun.js'
 
-import logger from '../logger'
+import logger from '@/library/logger'
 
 const mailgun = new Mailgun(formData)
 

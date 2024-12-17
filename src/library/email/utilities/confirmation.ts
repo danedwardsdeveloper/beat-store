@@ -1,4 +1,4 @@
-// import { sendEmail } from '../client'
+// import { sendEmail } from '@/library/email/client'
 
 // export function generateConfirmationURL() {
 //   return 'this is the URL'

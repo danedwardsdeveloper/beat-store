@@ -1,4 +1,4 @@
-import { isProduction } from './environment'
+import { isProduction } from '@/library/environment'
 
 if (!process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET missing')
