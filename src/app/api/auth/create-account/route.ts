@@ -6,8 +6,7 @@ import { createCookieOptions, generateTokenPayload, jwtSecret } from '@/library/
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { BasicResponses } from '@/app/api/types/responseMessages'
-import { SafeUser } from '@/app/api/types/safeUser'
+import { BasicResponses, SafeUser } from '@/app/api/types'
 
 export interface CreateAccountBodyPOST {
   email: string
@@ -79,6 +78,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<CreateAcc
     const tokenPayload = generateTokenPayload(user.id)
     const signedToken = jwt.sign(tokenPayload, jwtSecret)
     const tokenCookie = createCookieOptions(signedToken)
+
+    // Sync local cart with database cart
 
     const response = NextResponse.json(
       {
