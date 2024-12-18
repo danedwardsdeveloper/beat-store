@@ -5,15 +5,16 @@ import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
 import protectedRoute from '@/app/api/auth/protectedRoute'
-import { BasicResponses, HttpStatus } from '@/app/api/types'
+import { AuthResponses, BasicResponses, HttpStatus } from '@/app/api/types'
 
 export interface AdminBeatsResponsePOST {
-  message: BasicResponses
+  message: BasicResponses | AuthResponses
   beatId?: string
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<AdminBeatsResponsePOST>> {
-  return protectedRoute<AdminBeatsResponsePOST>(request, 'admin', async () => {
+  logger.debug('New beat route called')
+  return protectedRoute<AdminBeatsResponsePOST>(request, '', async () => {
     try {
       const newBeat = await prisma.beat.create({
         data: {},
@@ -28,7 +29,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<AdminBeat
         { status: HttpStatus.http201created },
       )
     } catch (error) {
-      logger.error('Database error trying to create new empty beat', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown database error'
+      logger.error('Database error trying to create new empty beat', { error: errorMessage })
       return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
     }
   })
