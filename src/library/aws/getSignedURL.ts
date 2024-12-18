@@ -2,7 +2,7 @@ import { getSignedUrl } from '@aws-sdk/cloudfront-signer'
 
 import { cfDomain, cfKeyPairId, cfPrivateKey } from './configuration'
 // ToDo move this definition
-import { AssetType } from '@/app/api/admin/beats/[beatId]/assets/route'
+import { AssetType } from '@/app/api/admin/beats/[beatIdentifier]/assets/route'
 
 const thirtyMinutesInMilliseconds = 30 * 60 * 1000
 
