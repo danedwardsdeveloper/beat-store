@@ -1,5 +1,5 @@
 export * from './definitions/apiEndpoints'
 export * from './definitions/httpStatus'
 export * from './definitions/responseMessages'
-export * from './definitions/safeBeat'
+export * from './definitions/beat'
 export * from './definitions/safeUser'
