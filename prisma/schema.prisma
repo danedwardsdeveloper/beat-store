@@ -30,6 +30,7 @@ model User {
 model Beat {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   title           String   @default("")
+  slug            String   @default("") // TODO Must be unique
   metaTitle       String   @default("")
   description     String[] @default([""])
   metaDescription String   @default("")
@@ -61,6 +62,7 @@ model Beat {
   discountExpiresAt    DateTime?
 
   // Assets
+  // ToDo
   fullSizeArtworkKey String?
   thumbnailKey       String?
   socialPhotoKey     String?
