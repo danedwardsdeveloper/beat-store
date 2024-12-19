@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { BasicResponses, HttpStatus, SafePublicBeat } from '@/app/api/types'
+import { BasicMessages, HttpStatus, SafePublicBeat } from '@/app/api/types'
 
 export interface BeatsGET {
-  message: BasicResponses | 'no beats found'
+  message: BasicMessages | 'no beats found'
   beats?: SafePublicBeat[]
 }
 
