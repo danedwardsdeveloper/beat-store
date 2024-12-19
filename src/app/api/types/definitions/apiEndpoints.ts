@@ -1,5 +1,7 @@
 import { Beat } from '@prisma/client'
 
+import { CheckoutResponsePOST } from '../../(stripe)/checkout/route'
+import { WebhookResponsePOST } from '../../(stripe)/webhook/route'
 import { AdminBeatsAssetsBodyPOST } from '@/app/api/admin/beats/[beatIdentifier]/assets/route'
 import { BeatsResponseDELETE, BeatsResponsePATCH } from '@/app/api/admin/beats/[beatIdentifier]/route'
 import { AdminBeatsResponseGET, AdminBeatsResponsePOST } from '@/app/api/admin/beats/route'
@@ -46,5 +48,11 @@ export interface ApiEndpoints {
   }
   '/api/beats': {
     response: BeatsGET
+  }
+  '/api/checkout': {
+    response: CheckoutResponsePOST
+  }
+  '/api/webhook': {
+    response: WebhookResponsePOST
   }
 }
