@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import logger from '@/library/logger'
 
-import protectedRoute from '@/app/api/auth/protectedRoute'
-import { BasicResponses, HttpStatus } from '@/app/api/types'
+import protectedRoute from '@/app/api/protectedRoute'
+import { BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface RegenerateResponsePOST {
-  message: BasicResponses | 'regeneration failed'
+  message: BasicMessages | 'regeneration failed'
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<RegenerateResponsePOST>> {
