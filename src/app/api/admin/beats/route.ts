@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import protectedRoute from '@/app/api/auth/protectedRoute'
-import { AuthResponses, BasicResponses, HttpStatus } from '@/app/api/types'
+import protectedRoute from '@/app/api/protectedRoute'
+import { AuthResponses, BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface AdminBeatsResponsePOST {
-  message: BasicResponses | AuthResponses
+  message: BasicMessages | AuthResponses
   beatId?: string
 }
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<AdminBeat
 }
 
 export interface AdminBeatsResponseGET {
-  message: BasicResponses
+  message: BasicMessages
   beats?: Beat[]
 }
 
