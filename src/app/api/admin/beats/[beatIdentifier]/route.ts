@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import protectedRoute from '@/app/api/auth/protectedRoute'
-import { AuthResponses, BasicResponses, BeatMetadata, HttpStatus } from '@/app/api/types'
+import protectedRoute from '@/app/api/protectedRoute'
+import { AuthResponses, BasicMessages, BeatMetadata, HttpStatus } from '@/app/api/types'
 
 export interface BeatsResponseGET {
-  message: BasicResponses | AuthResponses | 'beat not found'
+  message: BasicMessages | AuthResponses | 'beat not found'
   beat?: Beat
 }
 
@@ -17,7 +17,7 @@ export async function GET(
   { params }: { params: Promise<{ beatIdentifier: string }> },
 ): Promise<NextResponse<BeatsResponseGET>> {
   // TODO Undo temporary authorisation bypass
-  return protectedRoute<BeatsResponseGET>(request, '', async () => {
+  return protectedRoute<BeatsResponseGET>(request, 'bypass authorisation', async () => {
     const { beatIdentifier } = await params
     try {
       const isObjectId = /^[0-9a-fA-F]{24}$/.test(beatIdentifier)
@@ -53,7 +53,7 @@ export async function GET(
 }
 
 export interface BeatsResponsePATCH {
-  message: BasicResponses | AuthResponses | 'beat not found'
+  message: BasicMessages | AuthResponses | 'beat not found'
   updatedBeat?: Beat
 }
 
@@ -62,7 +62,7 @@ export async function PATCH(
   { params }: { params: Promise<{ beatIdentifier: string }> },
 ): Promise<NextResponse<BeatsResponsePATCH>> {
   // TODO Undo temporary authorisation bypass
-  return protectedRoute<BeatsResponsePATCH>(request, '', async () => {
+  return protectedRoute<BeatsResponsePATCH>(request, 'bypass authorisation', async () => {
     const { beatIdentifier } = await params
     const body: BeatMetadata = await request.json()
 
@@ -110,7 +110,7 @@ export async function PATCH(
 }
 
 export interface BeatsResponseDELETE {
-  message: BasicResponses | 'beat not found'
+  message: BasicMessages | 'beat not found'
 }
 
 export async function DELETE(
