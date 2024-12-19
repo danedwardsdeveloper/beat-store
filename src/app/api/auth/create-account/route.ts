@@ -6,7 +6,7 @@ import { createCookieOptions, generateTokenPayload, jwtSecret } from '@/library/
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
-import { BasicResponses, SafeUser } from '@/app/api/types'
+import { BasicMessages, SafeUser } from '@/app/api/types'
 
 export interface CreateAccountBodyPOST {
   email: string
@@ -18,7 +18,7 @@ export interface CreateAccountBodyPOST {
 
 export interface CreateAccountResponsePOST {
   message:
-    | BasicResponses
+    | BasicMessages
     | 'email missing'
     | 'password missing'
     | 'firstName missing'
