@@ -1,9 +1,6 @@
 import Sharp from 'sharp'
 
-export default async function generateSocialImage(base64Image: string): Promise<Buffer> {
-  const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
-  const imageBuffer = Buffer.from(base64Data, 'base64')
-
+export async function generateSocialImage(imageBuffer: Buffer): Promise<Buffer> {
   const blurredBackground = await Sharp(imageBuffer)
     .resize(1200, 630, {
       fit: 'cover',
