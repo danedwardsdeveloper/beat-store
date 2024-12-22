@@ -2,8 +2,8 @@ import { Beat } from '@prisma/client'
 
 import { CheckoutResponsePOST } from '../../(stripe)/checkout/route'
 import { WebhookResponsePOST } from '../../(stripe)/webhook/route'
-import { AdminBeatsAssetsBodyPOST } from '@/app/api/admin/beats/[beatIdentifier]/assets/route'
-import { BeatsResponseDELETE, BeatsResponsePATCH } from '@/app/api/admin/beats/[beatIdentifier]/route'
+import { AdminBeatsAssetsBodyPOST } from '@/app/api/admin/beats/[beatId]/assets/route'
+import { BeatsResponseDELETE, BeatsResponsePATCH } from '@/app/api/admin/beats/[beatId]/route'
 import { AdminBeatsResponseGET, AdminBeatsResponsePOST } from '@/app/api/admin/beats/route'
 import { RegenerateResponsePOST } from '@/app/api/admin/regenerate/route'
 import { CreateAccountBodyPOST, CreateAccountResponsePOST } from '@/app/api/auth/create-account/route'
@@ -55,4 +55,11 @@ export interface ApiEndpoints {
   '/api/webhook': {
     response: WebhookResponsePOST
   }
+  '/api/orders': 'POST' // Create new generic order
+  '/api/orders/[orderId]':
+    | 'PUT' // Update existing order
+    | 'GET' // Get order details
+  '/api/customers/[customerId]/orders':
+    | 'GET' // Get all orders for a customer
+    | 'POST' // Create order for a specific customer
 }
