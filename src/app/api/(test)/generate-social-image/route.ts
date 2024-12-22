@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { homedir } from 'os'
 import { join } from 'path'
 
-import generateSocialImage from '@/library/images/generateSocialImage'
+import generateSocialImage from '@/library/images/generateImages'
 import logger from '@/library/logger'
 
 export async function POST(req: Request) {
