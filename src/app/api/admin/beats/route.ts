@@ -17,7 +17,20 @@ export async function POST(request: NextRequest): Promise<NextResponse<AdminBeat
   return protectedRoute<AdminBeatsResponsePOST>(request, 'admin', 'allow unconfirmed', async () => {
     try {
       const newBeat = await prisma.beat.create({
-        data: {},
+        data: {
+          taggedMp3: {
+            originalFileName: '',
+            fileSizeInMb: 0,
+          },
+          untaggedMp3: {
+            originalFileName: '',
+            fileSizeInMb: 0,
+          },
+          wav: {
+            originalFileName: '',
+            fileSizeInMb: 0,
+          },
+        },
         select: {
           id: true,
         },
