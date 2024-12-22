@@ -1,6 +1,7 @@
 export type BasicMessages =
   | 'success' //
   | 'server error'
+  | 'params missing'
   | 'database error'
 
 export type AuthMessages =
