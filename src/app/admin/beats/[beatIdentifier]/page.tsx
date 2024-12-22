@@ -4,19 +4,19 @@ import { Beat, MusicalKeyLetter, Tonality } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { use, useEffect, useState } from 'react'
 
-import { BeatsResponseGET, BeatsResponsePATCH } from '@/app/api/admin/beats/[beatIdentifier]/route'
+import { BeatsResponseGET, BeatsResponsePATCH } from '@/app/api/admin/beats/[beatId]/route'
 
-export default function AdminBeatPage({ params }: { params: Promise<{ beatIdentifier: string }> }) {
+export default function AdminBeatPage({ params }: { params: Promise<{ beatId: string }> }) {
   const unwrappedParams = use(params)
   const router = useRouter()
-  const { beatIdentifier } = unwrappedParams
+  const { beatId } = unwrappedParams
   const [message, setMessage] = useState<string>('')
   const [formState, setFormState] = useState<Beat | undefined>()
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const response = await fetch(`/api/admin/beats/${beatIdentifier}`, {
+        const response = await fetch(`/api/admin/beats/${beatId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -31,13 +31,13 @@ export default function AdminBeatPage({ params }: { params: Promise<{ beatIdenti
     }
 
     fetchInitialData()
-  }, [beatIdentifier])
+  }, [beatId])
 
   const handleSave = async () => {
     if (!formState) return
     const { id, ...updatedData } = formState
     try {
-      const response = await fetch(`/api/admin/beats/${beatIdentifier}`, {
+      const response = await fetch(`/api/admin/beats/${beatId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
