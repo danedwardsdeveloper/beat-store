@@ -1,14 +1,14 @@
 import Stripe from 'stripe'
 
-import { requireEnv } from '@/library/environment'
+import { requireVariable } from '@/library/environment/requireVariable'
 
 export type StripeLineItem = Stripe.Checkout.SessionCreateParams.LineItem
 
-export const endpointSecret = requireEnv('STRIPE_WEBHOOK_SECRET')
+export const endpointSecret = requireVariable('STRIPE_WEBHOOK_SECRET')
 
 const useRealMoney = false
-const stripeSecretKey = requireEnv('STRIPE_SECRET_KEY')
-const stripeSecretTestKey = requireEnv('STRIPE_SECRET_TEST_KEY')
+const stripeSecretKey = requireVariable('STRIPE_SECRET_KEY')
+const stripeSecretTestKey = requireVariable('STRIPE_SECRET_TEST_KEY')
 export const stripeDynamicSecretKey = useRealMoney ? stripeSecretKey : stripeSecretTestKey
 
 export const stripeClient = new Stripe(stripeSecretKey, {
