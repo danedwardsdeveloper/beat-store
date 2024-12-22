@@ -27,10 +27,15 @@ model User {
   @@map("users")
 }
 
+type AssetMetadata {
+  originalFileName String
+  fileSizeInMb     Float
+}
+
 model Beat {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   title           String   @default("")
-  slug            String   @default("") // TODO Must be unique
+  slug            String   @unique @default("")
   metaTitle       String   @default("")
   description     String[] @default([""])
   metaDescription String   @default("")
@@ -43,14 +48,16 @@ model Beat {
   isExclusiveSold Boolean  @default(false)
 
   // Musical info 
-  duration         Int? // Get this from audio upload
+  duration         Int?
   bpm              Int?
   musicalKeyLetter MusicalKeyLetter?
   tonality         Tonality?
-  genres           String[]          @default([])
-  instruments      String[]          @default([])
-  soundsLike       String[]          @default([])
-  tags             String[]          @default([])
+
+  // Relational musical info
+  genres      String[] @default([])
+  instruments String[] @default([])
+  soundsLike  String[] @default([])
+  tags        String[] @default([])
 
   // Pricing
   useDefaultPrices     Boolean   @default(true)
@@ -62,17 +69,11 @@ model Beat {
   discountExpiresAt    DateTime?
 
   // Assets
-  // ToDo
-  fullSizeArtworkKey String?
-  thumbnailKey       String?
-  socialPhotoKey     String?
-  taggedMp3Key       String?
-  untaggedMp3Key     String?
-  wavKey             String?
-  zippedStemsKey     String?
-
-  // file size for each audio asset
-  // uploaded boolean for artwork, taggedMp3, untaggedMp3, wav & zippedStems
+  originalArtworkFileName String         @default("")
+  taggedMp3               AssetMetadata
+  untaggedMp3             AssetMetadata
+  wav                     AssetMetadata
+  stems                   AssetMetadata?
 
   // Analytics
   playCount      Int @default(0)
@@ -214,4 +215,7 @@ enum Tonality {
   modal
 }
 
+// rm -rf node_modules/.prisma
+// pnpm install
+// pnpm dlx prisma generate
 // pnpm dlx prisma db push
