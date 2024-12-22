@@ -5,16 +5,16 @@ import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
 
 import protectedRoute from '@/app/api/protectedRoute'
-import { AuthResponses, BasicMessages, HttpStatus } from '@/app/api/types'
+import { AuthMessages, BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface AdminBeatsResponsePOST {
-  message: BasicMessages | AuthResponses
+  message: BasicMessages | AuthMessages
   beatId?: string
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<AdminBeatsResponsePOST>> {
   logger.debug('New beat route called')
-  return protectedRoute<AdminBeatsResponsePOST>(request, '', async () => {
+  return protectedRoute<AdminBeatsResponsePOST>(request, 'admin', 'allow unconfirmed', async () => {
     try {
       const newBeat = await prisma.beat.create({
         data: {},
@@ -42,7 +42,7 @@ export interface AdminBeatsResponseGET {
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse<AdminBeatsResponseGET>> {
-  return protectedRoute<AdminBeatsResponseGET>(request, 'admin', async () => {
+  return protectedRoute<AdminBeatsResponseGET>(request, 'admin', 'allow unconfirmed', async () => {
     try {
       const allBeats = await prisma.beat.findMany({
         orderBy: {
