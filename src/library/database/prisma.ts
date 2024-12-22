@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { isProduction } from '../environment'
+import { isProduction } from '../environment/configuration'
 
 type GlobalWithPrisma = typeof globalThis & {
   prisma: PrismaClient | undefined
