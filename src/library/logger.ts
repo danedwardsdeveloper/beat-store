@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import chalk from 'chalk'
 
-import { isProduction } from '@/library/environment'
+import { isProduction } from '@/library/environment/configuration'
 
 const logger = {
   debug: isProduction
