@@ -1,38 +1,16 @@
-/* eslint-disable */
-import { GetObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 import { Beat } from '@prisma/client'
+import { parseBuffer } from 'music-metadata'
 import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
 
-import { checkFileExists, s3Client, S3ContentType, uploadToS3 } from '@/library/aws/s3'
+import { checkFileExists, S3ContentType, uploadToS3 } from '@/library/aws/s3'
 import prisma from '@/library/database/prisma'
 import { generateSocialImage } from '@/library/images/generateImages'
 import logger from '@/library/logger'
+import sanitiseFileName from '@/library/sanitiseFileName'
 
 import protectedRoute from '@/app/api/protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
-
-// Error: Route "/api/admin/beats/[beatId]/assets" used `params.beatId`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-
-export interface Asset {
-  url: string
-}
-
-export interface AssetWithMetadata {
-  url: string
-  sizeInMb: number
-  originalFileName: string
-}
-
-export interface BeatAssets {
-  artwork?: Asset
-  thumbnail?: Asset
-  socialImage?: Asset
-  taggedMp3?: AssetWithMetadata
-  untaggedMp3?: AssetWithMetadata
-  wav?: AssetWithMetadata
-  stems?: AssetWithMetadata
-}
 
 export type AssetType = 'artwork' | 'taggedMp3' | 'untaggedMp3' | 'wav' | 'zippedStems'
 
@@ -45,10 +23,21 @@ enum InputFileType {
   'image/png' = 'image/png',
   'image/webp' = 'image/webp',
   'audio/mpeg' = 'audio/mpeg',
-  'audio/wav' = 'audio/wav',
+  'audio/wave' = 'audio/wave',
   'application/zip' = 'application/zip',
 }
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
+type BeatAssetUpdate = Partial<
+  Pick<Beat, 'originalArtworkFileName' | 'duration' | 'taggedMp3' | 'untaggedMp3' | 'wav' | 'stems'>
+>
+
+// ToDo - remove unused messages
 export interface AdminBeatsAssetsResponsePOST {
   message:
     | BasicMessages
@@ -61,26 +50,20 @@ export interface AdminBeatsAssetsResponsePOST {
     | 'invalid image'
     | 'image too big'
     | 'image too small'
-    | 'image not square'
     | 'image too large'
-    | 'image too small'
     | 'image not square'
     | 'WebP conversion failed'
     | 'social image generation failed'
     | 'thumbnail generation failed'
     | 'image processing failed'
+    | 'audio processing failed'
+    | 'file too big'
     | 'beat not found'
     | 'upload failed'
     | 'storage error'
     | 'S3 upload error'
     | 'update failed'
   beat?: Beat
-}
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
 }
 
 export async function POST(
@@ -98,7 +81,6 @@ export async function POST(
       file: formData.get('file') as File,
       assetType: formData.get('assetType') as AssetType,
     }
-
     if (!file) {
       logger.error('File missing')
       return NextResponse.json(
@@ -112,62 +94,37 @@ export async function POST(
     }
 
     const fileType = file.type
-
-    if (!(fileType in InputFileType)) {
-      logger.error('File format not accepted: ', fileType)
+    if (
+      assetType !== 'artwork' &&
+      assetType !== 'taggedMp3' &&
+      assetType !== 'untaggedMp3' &&
+      assetType !== 'wav' &&
+      assetType !== 'zippedStems'
+    ) {
+      logger.error(`Invalid asset type: ${assetType}`)
       return NextResponse.json(
-        {
-          message: 'invalid file format',
-        },
+        { message: 'invalid asset type' },
         {
           status: HttpStatus.http400badRequest,
         },
       )
     }
 
-    const fileMatchesAssetType = () => {
-      switch (assetType) {
-        case 'artwork':
-          return fileType === InputFileType['image/png']
-        case 'taggedMp3':
-        case 'untaggedMp3':
-          return fileType === InputFileType['audio/mpeg']
-        case 'wav':
-          return fileType === InputFileType['audio/wav']
-        case 'zippedStems':
-          return fileType === InputFileType['application/zip']
-        default:
-          return false
-      }
+    if (
+      (assetType === 'artwork' && fileType !== InputFileType['image/png']) ||
+      ((assetType === 'taggedMp3' || assetType === 'untaggedMp3') &&
+        fileType !== InputFileType['audio/mpeg']) ||
+      (assetType === 'wav' && fileType !== InputFileType['audio/wave']) ||
+      (assetType === 'zippedStems' && fileType !== InputFileType['application/zip'])
+    ) {
+      logger.error('File type mismatch:', { assetType, fileType })
+      return NextResponse.json({ message: 'mismatched format' }, { status: HttpStatus.http400badRequest })
     }
 
-    if (!fileMatchesAssetType()) {
-      logger.error(`File doesn't match asset type.`)
-      return NextResponse.json(
-        {
-          message: 'mismatched format',
-        },
-        {
-          status: HttpStatus.http400badRequest,
-        },
-      )
-    }
-
-    const sanitisedFileName = (): string => {
-      const withoutExtension = file.name.substring(0, file.name.lastIndexOf('.'))
-      const lowercase = withoutExtension.toLowerCase()
-      const withoutSpaces = lowercase.replace(/\s+/g, '-')
-      const withoutSpecialCharacters = withoutSpaces
-        .replace(/[^a-z0-9-]/g, '')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '')
-      return withoutSpecialCharacters || 'unnamed-file'
-    }
-
+    // 5. Check the provided beatId has a corresponding database document
     const foundBeat = await prisma.beat.findUnique({
       where: { id: beatId },
     })
-
     if (!foundBeat) {
       return NextResponse.json(
         {
@@ -178,113 +135,137 @@ export async function POST(
         },
       )
     }
-
     const foundBeatId = foundBeat.id
 
+    // Generate file names
+    const sanitisedFileName = sanitiseFileName(file.name)
+    const fileNameOptions = {
+      artwork: {
+        full: `${foundBeatId}/full.webp`,
+        social: `${foundBeatId}/social.png`,
+        thumb: `${foundBeatId}/thumb.webp`,
+      },
+      wav: `${foundBeatId}/audio.wav`,
+      taggedMp3: `${foundBeatId}/tagged.mp3`,
+      untaggedMp3: `${foundBeatId}/untagged.mp3`,
+      stems: `${foundBeatId}/stems.zip`,
+    }
+    const fileName =
+      assetType === 'artwork'
+        ? fileNameOptions.artwork.full
+        : assetType === 'wav'
+          ? fileNameOptions.wav
+          : assetType === 'taggedMp3'
+            ? fileNameOptions.taggedMp3
+            : assetType === 'untaggedMp3'
+              ? fileNameOptions.untaggedMp3
+              : fileNameOptions.stems
+
+    const s3contentType: S3ContentType = (() => {
+      if (assetType === 'wav') return 'audio/wav'
+      if (assetType === 'taggedMp3' || assetType === 'untaggedMp3') return 'audio/mpeg'
+      if (assetType === 'zippedStems') return 'application/zip'
+      return 'image/png'
+    })()
+
+    // 6. Check if asset has already been uploaded
+    try {
+      const filesToCheck = assetType === 'artwork' ? Object.values(fileNameOptions.artwork) : [fileName]
+      const existingFiles = await Promise.all(
+        filesToCheck.map(async key => {
+          const fileExists = await checkFileExists(key)
+          return fileExists ? key : null
+        }),
+      ).then(results => results.filter(Boolean))
+
+      if (existingFiles.length > 0) {
+        logger.warn('Files already exist:', JSON.stringify(existingFiles))
+        return NextResponse.json(
+          {
+            message: 'file already exists',
+          },
+          { status: HttpStatus.http409conflict },
+        )
+      }
+    } catch (error) {
+      logger.error('Error checking for existing files:', error)
+      return NextResponse.json({ message: 'storage error' }, { status: HttpStatus.http500serverError })
+    }
+
+    // Prepare the buffer
+    const updateData: BeatAssetUpdate = {}
+    let buffer: Buffer
+
+    try {
+      buffer = Buffer.from(await file.arrayBuffer())
+    } catch (error) {
+      logger.error('Failed to process file buffer:', error)
+      return NextResponse.json(
+        {
+          message: 'file processing failed',
+        },
+        {
+          status: HttpStatus.http500serverError,
+        },
+      )
+    }
+
     if (assetType === 'artwork') {
+      const { height, width } = await sharp(buffer).metadata()
+      if (!width || !height || width !== height || width < 1000 || width > 1000) {
+        return NextResponse.json(
+          {
+            message:
+              !width || !height
+                ? 'invalid image'
+                : width !== height
+                  ? 'image not square'
+                  : width < 1000
+                    ? 'image too small'
+                    : 'image too large',
+          },
+          { status: HttpStatus.http400badRequest },
+        )
+      }
+
       try {
-        const filesToCheck = [
-          `${foundBeatId}/full.webp`,
-          `${foundBeatId}/social.png`,
-          `${foundBeatId}/thumb.webp`,
-        ]
-
-        const existingFiles = await Promise.all(
-          filesToCheck.map(async key => {
-            const exists = await checkFileExists(key)
-            return exists ? key : null
-          }),
-        ).then(results => results.filter(Boolean))
-
-        if (existingFiles.length > 0) {
-          logger.warn('Files already exist:', JSON.stringify(existingFiles))
-          return NextResponse.json(
-            {
-              message: 'file already exists',
-            },
-            { status: HttpStatus.http409conflict },
-          )
-        }
-      } catch (error) {
-        logger.error('Error checking for existing files:', error)
-        return NextResponse.json({ message: 'storage error' }, { status: HttpStatus.http500serverError })
-      }
-
-      const tempBuffer = Buffer.from(await file.arrayBuffer())
-      const { height, width } = await sharp(tempBuffer).metadata()
-
-      if (!width || !height) {
-        return NextResponse.json({ message: 'invalid image' }, { status: HttpStatus.http400badRequest })
-      }
-
-      if (width !== height) {
-        return NextResponse.json({ message: 'image not square' }, { status: HttpStatus.http400badRequest })
-      }
-
-      if (width < 1000) {
-        return NextResponse.json({ message: 'image too small' }, { status: HttpStatus.http400badRequest })
-      }
-
-      if (width > 1000) {
-        return NextResponse.json({ message: 'image too large' }, { status: HttpStatus.http400badRequest })
-      }
-      try {
-        const convertedBuffer = await sharp(tempBuffer).webp().toBuffer()
-        const socialBuffer = await generateSocialImage(tempBuffer)
-        const thumbBuffer = await sharp(tempBuffer).resize(120, 120, { fit: 'cover' }).webp().toBuffer()
+        const convertedBuffer = await sharp(buffer).webp().toBuffer()
+        const socialBuffer = await generateSocialImage(buffer)
+        const thumbBuffer = await sharp(buffer).resize(120, 120, { fit: 'cover' }).webp().toBuffer()
 
         const uploads = await Promise.all([
           uploadToS3({
-            key: `${foundBeatId}/full.webp`,
+            key: fileNameOptions.artwork.full,
             data: convertedBuffer,
-            contentType: 'image/webp',
+            contentType: s3contentType,
           }),
           uploadToS3({
-            key: `${foundBeatId}/social.png`,
+            key: fileNameOptions.artwork.thumb,
+            data: thumbBuffer,
+            contentType: s3contentType,
+          }),
+          uploadToS3({
+            key: fileNameOptions.artwork.social,
             data: socialBuffer,
             contentType: 'image/png',
-          }),
-          uploadToS3({
-            key: `${foundBeatId}/thumb.webp`,
-            data: thumbBuffer,
-            contentType: 'image/webp',
           }),
         ])
 
         const failedUploads = uploads.filter(upload => !upload.success)
-
         if (failedUploads.length > 0) {
           const failedKeys = failedUploads.map(upload => upload.key).join(', ')
           logger.error('Failed to upload some images to S3:', { failedKeys })
-
           for (const failed of failedUploads) {
             logger.error('Upload error details:', {
               key: failed.key,
               error: failed.error,
             })
           }
-
-          return NextResponse.json(
-            { message: 'S3 upload error' },
-            { status: HttpStatus.http503serviceUnavailable },
-          )
+          return NextResponse.json({ message: 'S3 upload error' }, { status: HttpStatus.http500serverError })
         }
-
-        const [fullUpload, socialUpload, thumbUpload] = uploads
-
-        logger.info('All images uploaded successfully', {
-          fullKey: fullUpload.key,
-          socialKey: socialUpload.key,
-          thumbKey: thumbUpload.key,
-        })
-        return NextResponse.json(
-          {
-            message: 'success',
-          },
-          {
-            status: HttpStatus.http200ok,
-          },
-        )
+        logger.info('Images uploaded successfully')
+        updateData.originalArtworkFileName = sanitisedFileName
+        // No return statement because database still needs to be updated
       } catch (error) {
         logger.error('Image processing failed:', error)
         if (error instanceof Error) {
@@ -298,250 +279,148 @@ export async function POST(
           { status: HttpStatus.http500serverError },
         )
       }
+    } else {
+      // All assets except images need the file size, so get this first
+      const fileSizeInMb = Math.round((buffer.length / (1024 * 1024)) * 100) / 100
+      const fileHeader = Buffer.from(buffer.subarray(0, 4))
+
+      if (assetType === 'zippedStems') {
+        const TwoGigabytesInMegabytes = 2 * 1024
+        if (fileSizeInMb > TwoGigabytesInMegabytes) {
+          logger.error('Stems file too large:', { fileSizeInMb })
+          return NextResponse.json({ message: 'file too big' }, { status: HttpStatus.http400badRequest })
+        }
+
+        const validZipHeader = [0x50, 0x4b, 0x03, 0x04]
+        const hasValidZipHeader = validZipHeader.every((byte, i) => fileHeader[i] === byte)
+
+        if (!hasValidZipHeader) {
+          logger.error('Invalid ZIP file format')
+          return NextResponse.json(
+            { message: 'invalid file format' },
+            { status: HttpStatus.http400badRequest },
+          )
+        }
+        updateData.stems = {
+          originalFileName: sanitisedFileName,
+          fileSizeInMb,
+        }
+      } else {
+        try {
+          const audioMetadata = await parseBuffer(buffer)
+          if (!audioMetadata.format.duration) {
+            logger.error('Audio metadata missing duration: ', audioMetadata)
+            return NextResponse.json(
+              { message: 'audio processing failed' },
+              { status: HttpStatus.http500serverError },
+            )
+          }
+          updateData.duration = Math.round(audioMetadata.format.duration)
+        } catch (error) {
+          logger.error('Failed to parse audio metadata:', error)
+          return NextResponse.json(
+            { message: 'audio processing failed' },
+            { status: HttpStatus.http500serverError },
+          )
+        }
+      }
+
+      if (assetType === 'taggedMp3' || assetType === 'untaggedMp3') {
+        const validId3Header = [0x49, 0x44, 0x33]
+        const validMpegHeader = fileHeader[0] === 0xff && (fileHeader[1] & 0xe0) === 0xe0
+        const hasValidMp3Header = validId3Header.every((byte, i) => fileHeader[i] === byte) || validMpegHeader
+        if (!hasValidMp3Header) {
+          logger.error('Invalid MP3 file format')
+          return NextResponse.json(
+            { message: 'invalid file format' },
+            { status: HttpStatus.http400badRequest },
+          )
+        }
+
+        if (assetType === 'taggedMp3') {
+          updateData.taggedMp3 = {
+            originalFileName: sanitisedFileName,
+            fileSizeInMb: fileSizeInMb,
+          }
+        } else {
+          updateData.untaggedMp3 = {
+            originalFileName: sanitisedFileName,
+            fileSizeInMb,
+          }
+        }
+      }
+
+      if (assetType === 'wav') {
+        const wavHeader = Buffer.from(buffer.subarray(8, 12))
+        const validRiffHeader = [0x52, 0x49, 0x46, 0x46]
+        const validWavHeader = [0x57, 0x41, 0x56, 0x45]
+        const hasValidWavHeader =
+          validRiffHeader.every((byte, i) => fileHeader[i] === byte) &&
+          validWavHeader.every((byte, i) => wavHeader[i] === byte)
+        if (!hasValidWavHeader) {
+          logger.error('Invalid WAV format - missing RIFF/WAVE header')
+          return NextResponse.json(
+            { message: 'invalid file format' },
+            { status: HttpStatus.http400badRequest },
+          )
+        }
+
+        updateData.wav = {
+          originalFileName: sanitisedFileName,
+          fileSizeInMb,
+        }
+      }
+
+      try {
+        const { success, error } = await uploadToS3({
+          key: fileName,
+          data: buffer,
+          contentType: s3contentType,
+        })
+
+        if (!success) {
+          logger.error('Failed to upload asset to S3', { error, assetType, fileName })
+          return NextResponse.json({ message: 'S3 upload error' }, { status: HttpStatus.http500serverError })
+        }
+
+        logger.info('Asset successfully uploaded to S3', { assetType, fileName })
+        // No return statement because database still needs to be updated
+      } catch (error) {
+        logger.error('Unexpected error uploading to S3', {
+          error: error instanceof Error ? error.message : error,
+          assetType,
+          fileName,
+        })
+        return NextResponse.json({ message: 'S3 upload error' }, { status: HttpStatus.http500serverError })
+      }
     }
 
-    let buffer: Buffer
-    let contentType: S3ContentType
-
     try {
-      buffer = Buffer.from(await file.arrayBuffer())
-
-      switch (assetType) {
-        case 'wav':
-          contentType = 'audio/wav'
-          break
-        case 'taggedMp3':
-        case 'untaggedMp3':
-          contentType = 'audio/mpeg'
-          break
-        case 'zippedStems':
-          contentType = 'application/zip'
-          break
-        default:
-          return NextResponse.json(
-            {
-              message: 'invalid asset type',
-            },
-            {
-              status: HttpStatus.http400badRequest,
-            },
-          )
-      }
-    } catch (error) {
-      logger.error('Failed to process file buffer:', error)
+      const updatedBeat = await prisma.beat.update({
+        where: {
+          id: foundBeatId,
+        },
+        data: updateData,
+      })
+      logger.info('Database uploaded successfully: ', updatedBeat)
       return NextResponse.json(
         {
-          message: 'file processing failed',
+          message: 'success',
+          beat: updatedBeat,
+        },
+        {
+          status: HttpStatus.http200ok,
+        },
+      )
+    } catch {
+      return NextResponse.json(
+        {
+          message: 'server error',
         },
         {
           status: HttpStatus.http500serverError,
         },
       )
-    }
-
-    if (assetType === 'wav' || assetType === 'taggedMp3' || assetType === 'untaggedMp3') {
-      // 4. Audio Processing
-      // - Validate format
-      // - Get duration
-      // - Get file size
-    }
-
-    let zippedStemsBuffer
-    if (assetType === 'zippedStems') {
-      // 5. Stems Processing
-      // Validate format
-      // - Get file size
-      contentType = 'application/zip'
-    }
-
-    if (!buffer || !contentType) {
-      return NextResponse.json({
-        message: 'file missing',
-      })
-    }
-
-    try {
-      const upload = await uploadToS3({
-        key: 'temp-key',
-        data: buffer,
-        contentType: contentType,
-      })
-
-      logger.info('Asset successfully uploaded to S3')
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown S3 upload error'
-      logger.error('Failed to upload asset to S3', { errorMessage })
-      return NextResponse.json(
-        { message: 'S3 upload error' },
-        { status: HttpStatus.http503serviceUnavailable },
-      )
-    }
-
-    try {
-      const assetKey = (() => {
-        switch (assetType) {
-          case 'taggedMp3':
-            return `${foundBeat.id}-tagged.mp3`
-          case 'untaggedMp3':
-            return `${foundBeat.id}-untagged.mp3`
-          case 'wav':
-            return `${foundBeat.id}.wav`
-          case 'zippedStems':
-            return `${foundBeat.id}.zip`
-          default:
-            throw new Error(`Invalid asset type: ${assetType}`)
-        }
-      })()
-
-      const updateData = {
-        [assetType === 'taggedMp3'
-          ? 'taggedMp3Key'
-          : assetType === 'untaggedMp3'
-            ? 'untaggedMp3Key'
-            : assetType === 'wav'
-              ? 'wavKey'
-              : assetType === 'zippedStems'
-                ? 'zippedStemsKey'
-                : 'artworkKey']: assetKey,
-      }
-
-      const updatedBeat = await prisma.beat.update({
-        where: { id: foundBeat.id },
-        data: updateData,
-      })
-
-      logger.info('Beat document updated successfully', {
-        foundBeatId: foundBeat.id,
-        assetType,
-        assetKey,
-      })
-
-      return NextResponse.json({ message: 'success', beat: updatedBeat }, { status: HttpStatus.http200ok })
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown database error'
-      logger.error('Database error:', { error: errorMessage })
-      return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
-    }
-  })
-}
-
-interface AdminBeatsAssetsResponseDELETE {
-  message: 'success'
-}
-
-export async function DELETE(request: NextRequest): Promise<NextResponse<AdminBeatsAssetsResponseDELETE>> {
-  try {
-    logger.info('Delete route accessed!')
-    return NextResponse.json(
-      { message: 'success' },
-      {
-        status: HttpStatus.http200ok,
-      },
-    )
-  } catch (error) {
-    logger.error('Error in DELETE route:', error)
-    return NextResponse.json({ message: 'success' }, { status: HttpStatus.http500serverError })
-  }
-}
-
-interface SimpleAsset {
-  url: string
-}
-
-type ImageAssetKey = 'artwork' | 'thumbnail' | 'socialImage'
-type MetadataAssetKey = 'taggedMp3' | 'untaggedMp3' | 'wav' | 'stems'
-
-export interface AdminBeatsAssetsResponseGET {
-  message: BasicMessages
-  beatAssets?: BeatAssets
-}
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { beatId: string } },
-): Promise<NextResponse<AdminBeatsAssetsResponseGET>> {
-  return protectedRoute<AdminBeatsAssetsResponseGET>(request, 'admin', 'require confirmation', async () => {
-    try {
-      const { beatId } = await params
-      if (!beatId) {
-        return NextResponse.json(
-          {
-            message: 'params missing',
-          },
-          {
-            status: HttpStatus.http400badRequest,
-          },
-        )
-      }
-      const assets: BeatAssets = {}
-
-      const assetConfigs = {
-        artwork: { path: 'full.webp', needsMetadata: false },
-        thumbnail: { path: 'thumb.webp', needsMetadata: false },
-        socialImage: { path: 'social.png', needsMetadata: false },
-        taggedMp3: { path: 'tagged.mp3', needsMetadata: true },
-        untaggedMp3: { path: 'untagged.mp3', needsMetadata: true },
-        wav: { path: 'audio.wav', needsMetadata: true },
-        stems: { path: 'stems.zip', needsMetadata: true },
-      } as const
-
-      const checkResults = await Promise.allSettled(
-        Object.entries(assetConfigs).map(async ([key, config]) => {
-          const fullPath = `${beatId}/${config.path}`
-          try {
-            const response = await s3Client.send(
-              new GetObjectCommand({
-                Bucket: 'beat-store',
-                Key: fullPath,
-              }),
-            )
-
-            // Todo - this is the S3 url, which can't be viewed
-            const url = `https://beat-store.s3.us-east-1.amazonaws.com/${fullPath}`
-
-            if (
-              config.needsMetadata &&
-              (key === 'taggedMp3' || key === 'untaggedMp3' || key === 'wav' || key === 'stems')
-            ) {
-              return {
-                key,
-                value: {
-                  url,
-                  sizeInMb: Number((response.ContentLength || 0) / (1024 * 1024)).toFixed(2),
-                  originalFileName: config.path,
-                },
-              }
-            }
-
-            if (key === 'artwork' || key === 'thumbnail' || key === 'socialImage') {
-              return { key, value: { url } }
-            }
-
-            return null
-          } catch (error) {
-            if ((error as Error)?.name !== 'NoSuchKey') {
-              logger.error('Error checking S3 asset:', { beatId, path: fullPath, error })
-            }
-            return null
-          }
-        }),
-      )
-
-      checkResults.forEach(result => {
-        if (result.status === 'fulfilled' && result.value) {
-          const { key, value } = result.value
-          if (key === 'artwork' || key === 'thumbnail' || key === 'socialImage') {
-            assets[key] = value as SimpleAsset
-          } else if (key === 'taggedMp3' || key === 'untaggedMp3' || key === 'wav' || key === 'stems') {
-            assets[key] = value as unknown as AssetWithMetadata
-          }
-        }
-      })
-
-      return NextResponse.json({ message: 'success', beatAssets: assets }, { status: HttpStatus.http200ok })
-    } catch (error) {
-      logger.error('Failed to retrieve beat assets:', error)
-      return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
     }
   })
 }
