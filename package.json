@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mailgun.js": "^10.2.4",
     "mongodb": "^6.12.0",
+    "music-metadata": "^10.6.4",
     "next": "15.1.1",
     "prisma": "^6.1.0",
     "react": "19.0.0",
