@@ -10,13 +10,26 @@ export type SafePublicBeat = Omit<
   | 'unlimitedSales'
   | 'isExclusiveSold'
   | 'untaggedMp3Key'
+  | 'audioDuration' // Remove this!
+  | 'originalArtworkFileName'
   | 'wavKey'
   | 'zippedStemsKey'
   | 'favouritedBy'
   | 'favouritedByIds'
   | 'createdAt'
   | 'updatedAt'
->
+  | 'taggedMp3'
+  | 'untaggedMp3'
+  | 'wav'
+  | 'stems'
+> & {
+  assetUrls: {
+    taggedMp3: URL
+    artworkFull: URL
+    artworkThumb: URL
+    artworkSocialProxied: URL
+  }
+}
 
 export type BeatMetadata = Omit<
   SafePublicBeat,
