@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import prisma from '@/library/database/prisma'
+import { dynamicAssetsBaseURL } from '@/library/environment/configuration'
 import logger from '@/library/logger'
 
 import { BasicMessages, HttpStatus, SafePublicBeat } from '@/app/api/types'
@@ -24,6 +25,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<BeatsGET>>
       select: {
         id: true,
         title: true,
+        slug: true,
         metaTitle: true,
         description: true,
         metaDescription: true,
@@ -42,10 +44,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<BeatsGET>>
         customPriceExclusive: true,
         discountPercentage: true,
         discountExpiresAt: true,
-        fullSizeArtworkKey: true,
-        thumbnailKey: true,
-        socialPhotoKey: true,
-        taggedMp3Key: true,
         playCount: true,
         favouriteCount: true,
       },
@@ -54,11 +52,21 @@ export async function GET(request: NextRequest): Promise<NextResponse<BeatsGET>>
       },
     })
 
+    const beatsWithAssets: SafePublicBeat[] = activeBeats.map(beat => ({
+      ...beat,
+      assetUrls: {
+        taggedMp3: new URL(`${dynamicAssetsBaseURL}/${beat.id}/tagged.mp3`),
+        artworkFull: new URL(`${dynamicAssetsBaseURL}/${beat.id}/full.webp`),
+        artworkThumb: new URL(`${dynamicAssetsBaseURL}/${beat.id}/thumb.webp`),
+        artworkSocialProxied: new URL(`${dynamicAssetsBaseURL}/${beat.id}/social.png`),
+      },
+    }))
+
     logger.info('SafePublicBeats retrieved')
     return NextResponse.json(
       {
         message: 'success',
-        beats: activeBeats,
+        beats: beatsWithAssets,
       },
       { status: HttpStatus.http200ok },
     )
