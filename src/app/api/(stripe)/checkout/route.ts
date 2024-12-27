@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { dynamicBaseURL } from '@/library/environment/configuration'
-import { stripeClient, StripeLineItem } from '@/library/stripeConfiguration'
+import { stripeClient, StripeLineItem } from '@/library/stripe'
 
 import protectedRoute from '../../protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
