@@ -3,7 +3,7 @@ import stripe, { Stripe } from 'stripe'
 
 import prisma from '@/library/database/prisma'
 import logger from '@/library/logger'
-import { endpointSecret } from '@/library/stripeConfiguration'
+import { endpointSecret } from '@/library/stripe'
 
 import protectedRoute from '@/app/api/protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
