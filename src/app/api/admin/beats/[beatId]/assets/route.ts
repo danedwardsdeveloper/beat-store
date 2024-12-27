@@ -27,6 +27,7 @@ enum InputFileType {
   'application/zip' = 'application/zip',
 }
 
+// Not sure if this is needed
 export const config = {
   api: {
     bodyParser: false,
@@ -37,7 +38,6 @@ type BeatAssetUpdate = Partial<
   Pick<Beat, 'originalArtworkFileName' | 'duration' | 'taggedMp3' | 'untaggedMp3' | 'wav' | 'stems'>
 >
 
-// ToDo - remove unused messages
 export interface AdminBeatsAssetsResponsePOST {
   message:
     | BasicMessages
@@ -52,17 +52,12 @@ export interface AdminBeatsAssetsResponsePOST {
     | 'image too small'
     | 'image too large'
     | 'image not square'
-    | 'WebP conversion failed'
-    | 'social image generation failed'
-    | 'thumbnail generation failed'
     | 'image processing failed'
     | 'audio processing failed'
     | 'file too big'
     | 'beat not found'
-    | 'upload failed'
     | 'storage error'
     | 'S3 upload error'
-    | 'update failed'
   beat?: Beat
 }
 
