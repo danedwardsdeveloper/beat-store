@@ -11,7 +11,7 @@ export interface RegenerateResponsePOST {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<RegenerateResponsePOST>> {
-  return protectedRoute<RegenerateResponsePOST>(request, 'admin', async () => {
+  return protectedRoute<RegenerateResponsePOST>(request, 'admin', 'require confirmation', async () => {
     try {
       revalidatePath('/')
 
