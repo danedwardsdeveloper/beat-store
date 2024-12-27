@@ -1,8 +1,10 @@
 # Current task
 
-Set up S3 and cloudfront so I can get this route working
-`/admin/beats/{beatId}/media` POST
-Then create some audio files to upload
+- Design home page in Pixelmator
+
+# Other tasks
+
+- Signed URLs for protected assets
 
 # /auth
 
@@ -23,7 +25,8 @@ Then create some audio files to upload
 - [x] `/admin/beats` GET Published, scheduled and draft beats
 - [x] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
 - [x] `/admin/beats/{beatId}` DELETE
-- [ ] `/admin/beats/{beatId}/media` POST
+- [x] `/admin/beats/{beatId}/assets` POST
+- [ ] `/admin/beats/{beatId}/assets` DELETE
 
 ## Signed-in beats
 
@@ -48,9 +51,3 @@ Then create some audio files to upload
 - [ ] `/checkout` start Stripe checkout session
 - [ ] `/webhook` add access to purchased items after checkout success
 - [ ] `/error??` handle failed payments
-
-# Site content
-
-- [ ] License types
-- [ ] Privacy policy
-  - Log suspicious IP addresses with time frame
