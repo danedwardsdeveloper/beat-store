@@ -1,11 +1,5 @@
 import { isProduction } from '@/library/environment/configuration'
 
-if (!process.env.JWT_SECRET) {
-  throw new Error('JWT_SECRET missing')
-}
-
-export const jwtSecret = process.env.JWT_SECRET
-
 export type CookieName = 'token'
 const twentyFourHoursInSeconds = 24 * 60 * 60
 

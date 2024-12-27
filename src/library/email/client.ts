@@ -3,13 +3,9 @@ import Mailgun, { MailgunMessageData, MessagesSendResult } from 'mailgun.js'
 
 import logger from '@/library/logger'
 
+import { apiKey } from '../environment/configuration'
+
 const mailgun = new Mailgun(formData)
-
-const apiKey = process.env.MAILGUN_KEY
-
-if (!apiKey) {
-  throw new Error('MAILGUN_KEY missing')
-}
 
 const client = mailgun.client({
   username: 'api',
