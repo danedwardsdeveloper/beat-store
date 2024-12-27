@@ -1,6 +1,6 @@
 import { Beat } from '@prisma/client'
 
-export type SafePublicBeat = Omit<
+export type PublicBeat = Omit<
   Beat,
   | 'isHidden'
   | 'isDraft'
@@ -10,7 +10,6 @@ export type SafePublicBeat = Omit<
   | 'unlimitedSales'
   | 'isExclusiveSold'
   | 'untaggedMp3Key'
-  | 'audioDuration' // Remove this!
   | 'originalArtworkFileName'
   | 'wavKey'
   | 'zippedStemsKey'
@@ -22,17 +21,19 @@ export type SafePublicBeat = Omit<
   | 'untaggedMp3'
   | 'wav'
   | 'stems'
-> & {
+>
+
+export type PublicBeatWithAssets = PublicBeat & {
   assetUrls: {
-    taggedMp3: URL
-    artworkFull: URL
-    artworkThumb: URL
-    artworkSocialProxied: URL
+    taggedMp3: string
+    artworkFull: string
+    artworkThumb: string
+    artworkSocial: string
   }
 }
 
 export type BeatMetadata = Omit<
-  SafePublicBeat,
+  PublicBeat,
   | 'id'
   | 'basicSales'
   | 'premiumSales'
