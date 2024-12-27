@@ -125,7 +125,6 @@ export async function PATCH(
           discountPercentage: true,
           discountExpiresAt: true,
           originalArtworkFileName: true,
-          audioDuration: true,
           taggedMp3: true,
           untaggedMp3: true,
           wav: true,
