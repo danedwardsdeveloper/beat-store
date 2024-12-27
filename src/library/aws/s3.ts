@@ -2,7 +2,7 @@ import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s
 
 import logger from '@/library/logger'
 
-import { awsAccessKey, awsSecretAccessKey } from './awsConfiguration'
+import { awsAccessKey, awsSecretAccessKey } from '../environment/configuration'
 
 export const s3Client = new S3Client({
   region: 'us-east-1',
@@ -66,9 +66,10 @@ export async function checkFileExists(key: string): Promise<boolean> {
     )
     return true
   } catch (error) {
-    if ((error as Error).name === 'NotFound') {
+    if (error instanceof Error && (error.name === 'NotFound' || error.name === 'NoSuchKey')) {
       return false
     }
+    logger.error('S3 error: ', error)
     throw error
   }
 }
