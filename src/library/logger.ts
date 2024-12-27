@@ -3,15 +3,17 @@ import chalk from 'chalk'
 
 import { isProduction } from '@/library/environment/configuration'
 
+const voidCallback = (): void => {}
+
 const logger = {
   debug: isProduction
-    ? (): void => {}
-    : (...args: unknown[]): void => console.debug(chalk.gray('[DEBUG]', ...args)),
+    ? voidCallback
+    : (...args: unknown[]): void => console.debug(chalk.magenta('[DEBUG]', ...args)),
   info: isProduction
-    ? (): void => {}
+    ? voidCallback
     : (...args: unknown[]): void => console.info(chalk.blue('[INFO]', ...args)),
   warn: isProduction
-    ? (): void => {}
+    ? voidCallback
     : (...args: unknown[]): void => console.warn(chalk.yellow('[WARN]', ...args)),
   error: (...args: unknown[]): void => console.error(chalk.red('[ERROR]'), ...args),
 } as const
