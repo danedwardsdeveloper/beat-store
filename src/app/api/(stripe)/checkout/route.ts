@@ -1,8 +1,6 @@
-'use server'
-
 import { NextRequest, NextResponse } from 'next/server'
 
-import { dynamicBaseURL } from '@/library/environment/configuration'
+import { dynamicBaseURL } from '@/library/environment/publicVariables'
 import { stripeClient, StripeLineItem } from '@/library/stripe'
 
 import protectedRoute from '../../protectedRoute'
