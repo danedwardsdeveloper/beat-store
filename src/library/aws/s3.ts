@@ -2,7 +2,7 @@ import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s
 
 import logger from '@/library/logger'
 
-import { awsAccessKey, awsSecretAccessKey } from '../environment/configuration'
+import { awsAccessKey, awsSecretAccessKey } from '../environment/privateVariables'
 
 export const s3Client = new S3Client({
   region: 'us-east-1',
