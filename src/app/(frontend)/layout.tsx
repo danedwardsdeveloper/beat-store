@@ -1,10 +1,21 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 
-import Menu from '@/components/menu'
+import { defaultMetaDescription } from '@/library/metadata'
+
+import Menus from '@/components/menus'
+
+import './global-styles.tailwind.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
-  title: 'Beat Store',
-  description: 'A modern e-commerce app for selling beats',
+  title: 'Beat Store | Home',
+  description: defaultMetaDescription,
 }
 
 export default function RootLayout({
@@ -13,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en-GB">
-      <body className="font-sans antialiased">
-        <Menu />
+    <html lang="en-GB" className={inter.variable}>
+      <body className="antialiased font-sans bg-black text-zinc-300">
+        <Menus />
         {children}
       </body>
     </html>
