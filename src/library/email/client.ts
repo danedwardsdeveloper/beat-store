@@ -3,13 +3,13 @@ import Mailgun, { MailgunMessageData, MessagesSendResult } from 'mailgun.js'
 
 import logger from '@/library/logger'
 
-import { apiKey } from '../environment/configuration'
+import { mailgunKey } from '../environment/privateVariables'
 
 const mailgun = new Mailgun(formData)
 
-const client = mailgun.client({
+const mailgunClient = mailgun.client({
   username: 'api',
-  key: apiKey,
+  key: mailgunKey,
   url: 'https://api.eu.mailgun.net',
 })
 
@@ -36,7 +36,7 @@ export const sendEmail = async ({ to, subject, text, html }: EmailData): Promise
   }
 
   try {
-    const response = await client.messages.create('beatstore.co.uk', messageData)
+    const response = await mailgunClient.messages.create('beatstore.co.uk', messageData)
     return { success: true, response }
   } catch (error) {
     logger.error('Error sending email:', error)

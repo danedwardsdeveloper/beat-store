@@ -1,4 +1,4 @@
-import { dynamicBaseURL } from '../environment/configuration'
+import { dynamicBaseURL } from '../environment/privateVariables'
 import { PublicBeat, PublicBeatWithAssets } from '@/app/api/types'
 
 export function addAssets(beat: PublicBeat): PublicBeatWithAssets {
