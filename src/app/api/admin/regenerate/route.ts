@@ -1,9 +1,9 @@
 import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
-import logger from '@/library/logger'
+import protectedRoute from '@/library/auth/protectedRoute'
+import logger from '@/library/misc/logger'
 
-import protectedRoute from '@/app/api/protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface RegenerateResponsePOST {

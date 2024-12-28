@@ -1,7 +1,7 @@
 import formData from 'form-data'
 import Mailgun, { MailgunMessageData, MessagesSendResult } from 'mailgun.js'
 
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
 import { mailgunKey } from '../environment/privateVariables'
 

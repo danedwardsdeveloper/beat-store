@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { sendEmail } from '@/library/email/client'
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
 export async function GET() {
   try {

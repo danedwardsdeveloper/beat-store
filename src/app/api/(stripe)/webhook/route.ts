@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import stripe, { Stripe } from 'stripe'
 
+import protectedRoute from '@/library/auth/protectedRoute'
 import prisma from '@/library/database/prisma'
-import logger from '@/library/logger'
-import { endpointSecret } from '@/library/stripe'
+import { endpointSecret } from '@/library/environment/privateVariables'
+import logger from '@/library/misc/logger'
 
-import protectedRoute from '@/app/api/protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface WebhookResponsePOST {
@@ -67,6 +67,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<WebhookRe
               status: 'PAID',
             },
           })
+          if (!purchasedItems) {
+          }
         }
 
         // Error handling for successful payment but failure to transfer ownership

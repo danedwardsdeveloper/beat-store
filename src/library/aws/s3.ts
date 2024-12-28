@@ -1,6 +1,6 @@
 import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
 import { awsAccessKey, awsSecretAccessKey } from '../environment/privateVariables'
 

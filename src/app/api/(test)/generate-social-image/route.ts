@@ -5,7 +5,7 @@ import { homedir } from 'os'
 import { join } from 'path'
 
 import { generateSocialImage } from '@/library/images/generateImages'
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
 export async function POST(req: Request) {
   try {

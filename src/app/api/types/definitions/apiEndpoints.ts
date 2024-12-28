@@ -10,7 +10,6 @@ import { RegenerateResponsePOST } from '@/app/api/admin/regenerate/route'
 import { CreateAccountBodyPOST, CreateAccountResponsePOST } from '@/app/api/auth/create-account/route'
 import { DeleteAccountResponseDELETE } from '@/app/api/auth/delete-account/route'
 import { SignInBodyPOST, SignInResponsePOST } from '@/app/api/auth/sign-in/route'
-import { SignOutResponseGET } from '@/app/api/auth/sign-out/route'
 import { BeatsGET } from '@/app/api/published-beats/route'
 
 export interface ApiEndpoints {
@@ -21,9 +20,6 @@ export interface ApiEndpoints {
   '/api/auth/sign-in': {
     body: SignInBodyPOST
     response: SignInResponsePOST
-  }
-  '/api/auth/sign-out': {
-    response: SignOutResponseGET
   }
   '/api/auth/delete-account': {
     response: DeleteAccountResponseDELETE

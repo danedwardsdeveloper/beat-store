@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import { defaultMetaDescription } from '@/library/metadata'
+import { defaultMetaDescription } from '@/library/misc/metadata'
 
 import CtaButton from '@/components/CtaButton'
 

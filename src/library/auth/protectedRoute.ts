@@ -2,10 +2,11 @@ import { UserRole } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { CookieName, jwtSecret, TokenPayload } from '@/library/cookies'
 import prisma from '@/library/database/prisma'
-import logger from '@/library/logger'
+import { jwtSecret } from '@/library/environment/privateVariables'
+import logger from '@/library/misc/logger'
 
+import { CookieName, TokenPayload } from './cookies'
 import { AuthMessages, BasicMessages, HttpStatus, SafeUser } from '@/app/api/types'
 
 export default async function protectedRoute<T extends { message: AuthMessages | BasicMessages | string }>(

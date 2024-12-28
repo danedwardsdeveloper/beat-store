@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { dynamicBaseURL } from '@/library/environment/privateVariables'
+import { dynamicBaseURL } from '@/library/environment/publicVariables'
 
 import { ApiEndpoints } from '@/app/api/types'
 

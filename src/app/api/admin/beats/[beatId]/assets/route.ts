@@ -3,13 +3,13 @@ import { parseBuffer } from 'music-metadata'
 import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
 
+import protectedRoute from '@/library/auth/protectedRoute'
 import { checkFileExists, S3ContentType, uploadToS3 } from '@/library/aws/s3'
 import prisma from '@/library/database/prisma'
 import { generateSocialImage } from '@/library/images/generateImages'
-import logger from '@/library/logger'
-import sanitiseFileName from '@/library/sanitiseFileName'
+import logger from '@/library/misc/logger'
+import sanitiseFileName from '@/library/misc/sanitiseFileName'
 
-import protectedRoute from '@/app/api/protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
 
 export type AssetType = 'artwork' | 'taggedMp3' | 'untaggedMp3' | 'wav' | 'zippedStems'

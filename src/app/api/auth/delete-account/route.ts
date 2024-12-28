@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { CookieName, createClearCookieOptions, jwtSecret, TokenPayload } from '@/library/cookies'
+import { CookieName, createClearCookieOptions, TokenPayload } from '@/library/auth/cookies'
 import prisma from '@/library/database/prisma'
-import logger from '@/library/logger'
+import { jwtSecret } from '@/library/environment/privateVariables'
+import logger from '@/library/misc/logger'
 
 export interface DeleteAccountResponseDELETE {
   message:

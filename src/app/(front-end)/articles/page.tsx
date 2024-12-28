@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { articles } from './data'
 
 export default function ArticlesPage() {
@@ -16,7 +18,7 @@ export default function ArticlesPage() {
           {articles.map(post => (
             <article key={post.id} className="flex flex-col items-start justify-between">
               <div className="relative w-full">
-                <img
+                <Image
                   alt=""
                   src={post.imageUrl}
                   className="aspect-video w-full rounded-2xl bg-zinc-800 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"

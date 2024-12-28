@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
-import { dynamicBaseURL } from '@/library/environment/privateVariables'
-import { generateBeatMetadata } from '@/library/metadata'
+import { dynamicBaseURL } from '@/library/environment/publicVariables'
+import { generateBeatMetadata } from '@/library/misc/metadata'
 
 import { BeatsSlugGET } from '@/app/api/published-beats/[slug]/route'
 import { PublicBeatWithAssets } from '@/app/api/types'

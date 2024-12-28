@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { dynamicBaseURL } from '@/library/environment/publicVariables'
-import { stripeClient, StripeLineItem } from '@/library/stripe'
+import { stripeClient, StripeLineItem } from '@/library/misc/stripe'
 
-import protectedRoute from '../../protectedRoute'
+import protectedRoute from '../../../../library/auth/protectedRoute'
 import { BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface CheckoutResponsePOST {

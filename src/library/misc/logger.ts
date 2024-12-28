@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import chalk from 'chalk'
 
-import { isProduction } from './environment/publicVariables'
+import { isProduction } from '../environment/publicVariables'
 
 const voidCallback = (): void => {}
 

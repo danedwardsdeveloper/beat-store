@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
 import { AdminBeatsResponsePOST } from '@/app/api/admin/beats/route'
 

@@ -1,4 +1,4 @@
-import { isProduction } from './environment/publicVariables'
+import { isProduction } from '../environment/publicVariables'
 
 export enum CookieName {
   token = 'token',

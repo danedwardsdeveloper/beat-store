@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 import { PublicBeatWithAssets } from '@/app/api/types'
 
-import { productionBaseURL } from './environment/publicVariables'
+import { productionBaseURL } from '../environment/publicVariables'
 
 export const defaultMetaDescription =
   'Beat Store is a modern high-performance e-commerce website for selling beats. Get yours today.'

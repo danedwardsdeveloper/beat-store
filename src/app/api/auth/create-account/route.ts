@@ -2,9 +2,10 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { createCookieOptions, generateTokenPayload, jwtSecret } from '@/library/cookies'
+import { createCookieOptions, generateTokenPayload } from '@/library/auth/cookies'
 import prisma from '@/library/database/prisma'
-import logger from '@/library/logger'
+import { jwtSecret } from '@/library/environment/privateVariables'
+import logger from '@/library/misc/logger'
 
 import { BasicMessages, SafeUser } from '@/app/api/types'
 

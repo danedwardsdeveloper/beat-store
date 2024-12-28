@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { addAssets } from '@/library/beats/addAssets'
 import { publicBeatSelect } from '@/library/beats/publicBeatSelect'
 import prisma from '@/library/database/prisma'
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
 import { BasicMessages, HttpStatus, PublicBeatWithAssets } from '@/app/api/types'
 

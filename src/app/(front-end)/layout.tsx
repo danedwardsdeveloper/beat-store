@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { defaultMetaDescription } from '@/library/metadata'
+import { defaultMetaDescription } from '@/library/misc/metadata'
 
 import Menus from '@/components/menus'
 

@@ -1,10 +1,10 @@
 import { Beat } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
+import protectedRoute from '@/library/auth/protectedRoute'
 import prisma from '@/library/database/prisma'
-import logger from '@/library/logger'
+import logger from '@/library/misc/logger'
 
-import protectedRoute from '@/app/api/protectedRoute'
 import { AuthMessages, BasicMessages, HttpStatus } from '@/app/api/types'
 
 export interface AdminBeatsResponsePOST {

@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 
-import { stripeDynamicSecretKey } from './environment/privateVariables'
+import { stripeDynamicSecretKey } from '../environment/privateVariables'
 
 export type StripeLineItem = Stripe.Checkout.SessionCreateParams.LineItem
 
