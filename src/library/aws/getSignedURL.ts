@@ -1,6 +1,6 @@
 // import { getSignedUrl } from '@aws-sdk/cloudfront-signer'
 
-// import { cfDomain, cfKeyPairId, cfPrivateKey } from './awsConfiguration'
+// import {  cfKeyPairId, cfPrivateKey } from './awsConfiguration'
 // // ToDo move this definition
 // import { AssetType } from '@/app/api/admin/beats/[beatIdentifier]/assets/route'
 
