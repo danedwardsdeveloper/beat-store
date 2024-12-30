@@ -7,7 +7,7 @@ import { jwtSecret } from '@/library/environment/privateVariables'
 import logger from '@/library/misc/logger'
 
 import { CookieName, TokenPayload } from './cookies'
-import { AuthMessages, BasicMessages, HttpStatus, SafeUser } from '@/app/api/types'
+import { AuthMessages, BasicMessages, HttpStatus, SafeUser } from '@/types'
 
 export default async function protectedRoute<T extends { message: AuthMessages | BasicMessages | string }>(
   request: NextRequest,
