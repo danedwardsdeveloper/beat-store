@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import List from '@/components/beats/List'
+import List from '@/components/beats/BeatsList'
 
 export const metadata: Metadata = {
   title: 'Browse beats',
