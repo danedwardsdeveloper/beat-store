@@ -1,17 +1,18 @@
 'use client'
 
+import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
 
 import { homeMenuItem, iconMenuItems } from '../data'
 import MenuIcon from './MenuIcon'
 import Panel from './Panel'
-import { buttonClasses } from '@/app/(front-end)/styles/styles'
+import { menuItemStyles } from '@/app/(front-end)/styles/styles'
+import { useLayout } from '@/providers/layout'
 
 export default function MobileMenu() {
   const pathname = usePathname()
-  const [panelOpen, setPanelOpen] = useState(false)
+  const { mobilePanelOpen, toggleMobilePanel } = useLayout()
 
   return (
     <nav className="md:hidden">
@@ -23,14 +24,20 @@ export default function MobileMenu() {
             </Link>
           ))}
         </div>
-        <Link href={homeMenuItem.href} className={buttonClasses.primary.base}>
+        <Link
+          href={homeMenuItem.href}
+          className={clsx(
+            menuItemStyles.base,
+            pathname === homeMenuItem.href ? menuItemStyles.active : menuItemStyles.inactive,
+          )}
+        >
           {homeMenuItem.text.mobile}
         </Link>
-        <button onClick={() => setPanelOpen(!panelOpen)}>
+        <button onClick={() => toggleMobilePanel()}>
           <MenuIcon menuOpen={true} />
         </button>
       </div>
-      <Panel panelOpen={panelOpen} />
+      <Panel panelOpen={mobilePanelOpen} />
     </nav>
   )
 }
