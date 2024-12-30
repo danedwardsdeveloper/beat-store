@@ -2,19 +2,33 @@ import { ComponentType } from 'react'
 
 import { AccountIcon, ShoppingIcon } from './Icons'
 
-interface MenuItemData {
-  display: string | ComponentType
+export const homeMenuItem: MenuItem = {
+  text: {
+    desktop: 'Home',
+    mobile: 'Beat Store',
+  },
+  href: '/',
+}
+
+export interface MenuItem {
+  text: {
+    desktop: string
+    mobile: string
+  }
   href: string
 }
 
-export const menuItemsData: MenuItemData[] = [
-  { display: 'Home', href: '/' },
-  { display: 'Beats', href: '/beats' },
-  { display: 'Articles', href: '/articles' },
-  { display: 'Admin', href: '/admin' },
+export const menuItemsData: MenuItem[] = [
+  { text: { desktop: 'Beats', mobile: 'Beats' }, href: '/beats' },
+  { text: { desktop: 'Articles', mobile: 'Articles' }, href: '/articles' },
+  { text: { desktop: 'Admin', mobile: 'Admin' }, href: '/admin' },
 ]
 
-export const iconMenuItems: MenuItemData[] = [
-  { display: AccountIcon, href: '/account' },
-  { display: ShoppingIcon, href: '/cart' },
+export interface MenuItemWithIcon extends MenuItem {
+  icon: ComponentType
+}
+
+export const iconMenuItems: MenuItemWithIcon[] = [
+  { text: { desktop: 'Account', mobile: 'Account' }, icon: AccountIcon, href: '/account' },
+  { text: { desktop: 'Cart', mobile: 'Cart' }, icon: ShoppingIcon, href: '/cart' },
 ]
