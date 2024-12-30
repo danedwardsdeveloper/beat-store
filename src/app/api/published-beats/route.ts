@@ -1,40 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { addAssets } from '@/library/beats/addAssets'
-import { publicBeatSelect } from '@/library/beats/publicBeatSelect'
-import prisma from '@/library/database/prisma'
+import getPublishedBeats from '@/library/beats/getPublishedBeats'
 import logger from '@/library/misc/logger'
 
-import { BasicMessages, HttpStatus, PublicBeatWithAssets } from '@/app/api/types'
+import { BasicMessages, HttpStatus, PublicBeatWithAssets } from '@/types'
 
-export interface BeatsGET {
+export interface PublishedBeatsGETresponse {
   message: BasicMessages | 'no beats found'
   beats?: PublicBeatWithAssets[]
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse<BeatsGET>> {
+export async function GET(request: NextRequest): Promise<NextResponse<PublishedBeatsGETresponse>> {
   try {
-    const activeBeats = await prisma.beat.findMany({
-      where: {
-        isDraft: false,
-        isHidden: false,
-        isExclusiveSold: false,
-        releaseDate: {
-          lte: new Date(),
-        },
-      },
-      select: publicBeatSelect,
-      orderBy: {
-        releaseDate: 'desc',
-      },
-    })
+    const response = getPublishedBeats()
+    const { message, beats } = await response
 
-    const beatsWithAssets: PublicBeatWithAssets[] = activeBeats.map(beat => addAssets(beat))
+    if (!beats) {
+      logger.error('No beats found.', message)
+      return NextResponse.json({
+        message: 'no beats found',
+      })
+    }
+
     logger.info('SafePublicBeats retrieved')
     return NextResponse.json(
       {
         message: 'success',
-        beats: beatsWithAssets,
+        beats,
       },
       { status: HttpStatus.http200ok },
     )
