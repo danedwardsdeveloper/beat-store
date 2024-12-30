@@ -1,16 +1,14 @@
 import clsx from 'clsx'
+import Link from 'next/link'
+
+import { buttonClasses } from '@/app/(front-end)/styles/styles'
 
 export default function CtaButton() {
   return (
-    <button
-      className={clsx(
-        'text-black',
-        'bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500',
-        'transition-all duration-300',
-        'rounded py-1 px-4 text-xl font-bold',
-      )}
-    >
-      Get your store
-    </button>
+    <div className="max-w-xs mx-auto w-full px-8">
+      <Link href="/" className={clsx(buttonClasses.primary, 'block w-full')}>
+        Get your store
+      </Link>
+    </div>
   )
 }
