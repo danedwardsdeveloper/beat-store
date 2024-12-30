@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { addAssets } from '@/library/beats/addAssets'
-import { publicBeatSelect } from '@/library/beats/publicBeatSelect'
+import { activeBeatsWhere, publicBeatSelect } from '@/library/beats/publicBeatSelect'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/misc/logger'
 
-import { BasicMessages, HttpStatus, PublicBeatWithAssets } from '@/app/api/types'
+import { BasicMessages, HttpStatus, PublicBeatWithAssets } from '@/types'
 
 export interface BeatsSlugGET {
   message: BasicMessages | 'slug missing' | 'beat not found'
@@ -22,15 +22,7 @@ export async function GET(
   }
   try {
     const foundBeat = await prisma.beat.findFirst({
-      where: {
-        slug,
-        isDraft: false,
-        isHidden: false,
-        isExclusiveSold: false,
-        releaseDate: {
-          lte: new Date(),
-        },
-      },
+      where: activeBeatsWhere,
       select: publicBeatSelect,
       orderBy: {
         releaseDate: 'desc',
