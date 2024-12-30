@@ -2,7 +2,6 @@
 
 # Other tasks
 
-1. Add 2 more beats
 2. Beat page
    - Think about the content...
    - Styling
@@ -29,6 +28,7 @@
 15. Admin page
     - Styling
     - Make functional
+    - Add more beats to test
 16. Create the account page
     - Signed in page
     - Sign in page
