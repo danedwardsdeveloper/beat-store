@@ -1,4 +1,4 @@
-import { PublicBeat, PublicBeatWithAssets } from '@/app/api/types'
+import { PublicBeat, PublicBeatWithAssets } from '@/types'
 
 import { dynamicBaseURL } from '../environment/publicVariables'
 
