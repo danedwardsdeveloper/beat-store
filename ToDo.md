@@ -1,47 +1,41 @@
 # Current task
 
-- Design home page in Pixelmator
-
 # Other tasks
 
-- Signed URLs for protected assets
-
-# /auth
-
-- [x] `/sign-in`
-- [x] `/create-account`
-- [x] `/validate-token`
-- [x] `/delete-account`
-- [ ] `/confirm-email`
-- [ ] `/reset-password`
-- [ ] `/sign-out`
-
-## Admin beats
-
-- [ ] Create SafePublicBeat interface
-- [ ] Find solution for dynamic segment path type safety `/api/admin/beats/[beatId]`
-
-- [x] `/admin/beats` POST (Creates a new Beat document, returns the beat id)
-- [x] `/admin/beats` GET Published, scheduled and draft beats
-- [x] `/admin/beats/{beatId}` PATCH (Update metadata, price etc.)
-- [x] `/admin/beats/{beatId}` DELETE
-- [x] `/admin/beats/{beatId}/assets` POST
-- [ ] `/admin/beats/{beatId}/assets` DELETE
-
-## Signed-in beats
-
-- Not sure of these paths yet
-- [ ] `/user/beats/{beatId}` PATCH. Add favourite
-
-## Signed-out beats (Public)
-
-- [x] `/beats` GET all published beats
-- [ ] `/beats/{beatId}` PATCH. Increment play count ?? Not sure this is public...?
-
-## Update site settings
-
-- [ ] `/update-settings` PATCH
-- [x] `/regenerate`
+1. Add 2 more beats
+2. Beat page
+   - Think about the content...
+   - Styling
+3. Favicon
+4. Mobile menu
+   - layout provider
+5. Audio player
+   - Style
+   - Make functional
+6. Articles
+   - Beat website marketing best practices
+   - Simple trick to sell more beats
+7. Pricing section
+8. Newsletter section
+   - Free resource on sign up
+9. Direct contact form
+10. Deploy and add to my developer site
+11. Signed URLs for protected assets
+12. Think about friction-free checkout process
+13. Admin page
+    - Styling
+    - Make functional
+14. Create the account page
+    - Signed in page
+    - Sign in page
+    - Create account page
+    - Email confirmations
+15. Cart page
+    - Style
+    - Make functional
+16. Orders
+    - Style Order component
+    - retrieve previous orders
 
 # E-Commerce routes
 
