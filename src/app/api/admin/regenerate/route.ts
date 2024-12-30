@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import protectedRoute from '@/library/auth/protectedRoute'
 import logger from '@/library/misc/logger'
 
-import { BasicMessages, HttpStatus } from '@/app/api/types'
+import { BasicMessages, HttpStatus } from '@/types'
 
 export interface RegenerateResponsePOST {
   message: BasicMessages | 'regeneration failed'

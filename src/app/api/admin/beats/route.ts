@@ -5,7 +5,7 @@ import protectedRoute from '@/library/auth/protectedRoute'
 import prisma from '@/library/database/prisma'
 import logger from '@/library/misc/logger'
 
-import { AuthMessages, BasicMessages, HttpStatus } from '@/app/api/types'
+import { AuthMessages, BasicMessages, HttpStatus } from '@/types'
 
 export interface AdminBeatsResponsePOST {
   message: BasicMessages | AuthMessages

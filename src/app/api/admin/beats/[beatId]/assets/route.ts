@@ -10,7 +10,7 @@ import { generateSocialImage } from '@/library/images/generateImages'
 import logger from '@/library/misc/logger'
 import sanitiseFileName from '@/library/misc/sanitiseFileName'
 
-import { BasicMessages, HttpStatus } from '@/app/api/types'
+import { BasicMessages, HttpStatus } from '@/types'
 
 export type AssetType = 'artwork' | 'taggedMp3' | 'untaggedMp3' | 'wav' | 'zippedStems'
 
@@ -397,7 +397,7 @@ export async function POST(
         },
         data: updateData,
       })
-      logger.info('Database uploaded successfully: ', updatedBeat)
+      logger.info('Database updated successfully: ')
       return NextResponse.json(
         {
           message: 'success',

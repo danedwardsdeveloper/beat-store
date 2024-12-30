@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import protectedRoute from '@/library/auth/protectedRoute'
 import { dynamicBaseURL } from '@/library/environment/publicVariables'
 import { stripeClient, StripeLineItem } from '@/library/misc/stripe'
 
-import protectedRoute from '../../../../library/auth/protectedRoute'
-import { BasicMessages, HttpStatus } from '@/app/api/types'
+import { BasicMessages, HttpStatus } from '@/types'
 
 export interface CheckoutResponsePOST {
   message: BasicMessages | 'empty cart'

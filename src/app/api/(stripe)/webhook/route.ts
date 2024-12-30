@@ -6,7 +6,7 @@ import prisma from '@/library/database/prisma'
 import { endpointSecret } from '@/library/environment/privateVariables'
 import logger from '@/library/misc/logger'
 
-import { BasicMessages, HttpStatus } from '@/app/api/types'
+import { BasicMessages, HttpStatus } from '@/types'
 
 export interface WebhookResponsePOST {
   message:

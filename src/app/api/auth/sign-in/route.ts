@@ -7,7 +7,7 @@ import prisma from '@/library/database/prisma'
 import { jwtSecret } from '@/library/environment/privateVariables'
 import logger from '@/library/misc/logger'
 
-import { SafeUser } from '@/app/api/types'
+import { SafeUser } from '@/types'
 
 export interface SignInBodyPOST {
   email: string
