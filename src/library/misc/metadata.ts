@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { PublicBeatWithAssets } from '@/app/api/types'
+import { PublicBeatWithAssets } from '@/types'
 
 import { productionBaseURL } from '../environment/publicVariables'
 
