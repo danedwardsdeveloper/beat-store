@@ -1,9 +1,11 @@
-import Desktop from './Desktop'
+import DesktopMenu from './DesktopMenu'
+import MobileMenu from './mobile'
 
 export default function Menus() {
   return (
     <>
-      <Desktop />
+      <MobileMenu />
+      <DesktopMenu />
     </>
   )
 }
