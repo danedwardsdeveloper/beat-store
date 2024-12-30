@@ -1,38 +1,37 @@
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
-import { dynamicBaseURL } from '@/library/environment/publicVariables'
+import getPublishedBeats, { GetPublishedBeatsResponse } from '@/library/beats/getPublishedBeats'
+import logger from '@/library/misc/logger'
 import { generateBeatMetadata } from '@/library/misc/metadata'
 
-import { BeatsSlugGET } from '@/app/api/published-beats/[slug]/route'
-import { PublicBeatWithAssets } from '@/app/api/types'
-
 export async function generateStaticParams() {
-  const response = await fetch(`${dynamicBaseURL}/api/published-beats`, {
-    method: 'GET',
-  })
-  const { beats } = await response.json()
-  return beats.map((beat: PublicBeatWithAssets) => ({
-    slug: beat.slug,
-  }))
+  try {
+    const response = await getPublishedBeats()
+    const { beats, message }: GetPublishedBeatsResponse = response
+
+    if (!beats) {
+      logger.warn('No beats found. ', message)
+      return []
+    } else {
+      return beats.map(beat => ({
+        slug: beat.slug,
+      }))
+    }
+  } catch (error) {
+    logger.error('Error in generateStaticParams: ', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const response = await fetch(`${dynamicBaseURL}/api/published-beats/${slug}`, {
-    method: 'GET',
-  })
-  const { beat }: BeatsSlugGET = await response.json()
+  const { beat }: GetPublishedBeatsResponse = await getPublishedBeats({ slug: (await params).slug })
   if (!beat) return {}
   return generateBeatMetadata({ beat })
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const response = await fetch(`${dynamicBaseURL}/api/published-beats/${slug}`, {
-    method: 'GET',
-  })
-  const { beat }: BeatsSlugGET = await response.json()
+  const { beat }: GetPublishedBeatsResponse = await getPublishedBeats({ slug: (await params).slug })
 
   if (!beat) {
     notFound()
