@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { defaultMetaDescription } from '@/library/misc/metadata'
 
 import Providers from './(home-page)/components/Providers'
+import AudioPlayer from '@/components/audioPlayer.tsx'
 import Menus from '@/components/menus'
 import NotificationContainer from '@/components/notifications/NotificationContainer'
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         <Providers>
           <Menus />
           <main>{children}</main>
+          <AudioPlayer />
           <NotificationContainer />
         </Providers>
       </body>
