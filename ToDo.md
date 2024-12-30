@@ -16,24 +16,28 @@
    - Beat website marketing best practices
    - Simple trick to sell more beats
 7. Pricing section
-8. Newsletter section
-   - Free resource on sign up
-9. Direct contact form
-10. Deploy and add to my developer site
-11. Signed URLs for protected assets
-12. Think about friction-free checkout process
-13. Admin page
+8. Notifications
+   - Add 'success' | 'error' | 'information'
+9. Contact form
+   - Make error handling more robust
+10. Newsletter section
+    - Free resource on sign up
+11. Direct contact form
+12. Deploy and add to my developer site
+13. Signed URLs for protected assets
+14. Think about friction-free checkout process
+15. Admin page
     - Styling
     - Make functional
-14. Create the account page
+16. Create the account page
     - Signed in page
     - Sign in page
     - Create account page
     - Email confirmations
-15. Cart page
+17. Cart page
     - Style
     - Make functional
-16. Orders
+18. Orders
     - Style Order component
     - retrieve previous orders
 
