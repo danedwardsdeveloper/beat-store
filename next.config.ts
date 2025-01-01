@@ -3,10 +3,19 @@ import type { NextConfig } from 'next'
 /* cspell:disable */
 const nextConfig: NextConfig = {
   output: 'standalone',
+  devIndicators: {
+    appIsrStatus: false,
+  },
   async rewrites() {
     return [
       {
         source: '/images/:path*',
+        destination: 'https://d1ttulk89fbidl.cloudfront.net/:path*',
+        basePath: false,
+        locale: false,
+      },
+      {
+        source: '/audio/:path*',
         destination: 'https://d1ttulk89fbidl.cloudfront.net/:path*',
         basePath: false,
         locale: false,
@@ -18,6 +27,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'd1ttulk89fbidl.cloudfront.net',
+      },
+      // Todo: remove template content path
+      {
+        protocol: 'https',
+        hostname: 'tailwindui.com',
       },
     ],
   },
