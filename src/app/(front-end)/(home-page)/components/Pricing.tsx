@@ -23,7 +23,7 @@ const ringTwoClasses = 'ring-gray-900/5'
 // cspell:disable
 export default function Pricing() {
   return (
-    <div className={clsx('py-24 sm:py-32', backgroundClasses.secondary)}>
+    <div className={clsx('py-24 sm:py-32', backgroundClasses.primary)}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl sm:text-center">
           <h2
