@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import logger from '@/library/misc/logger'
 
-import { buttonClasses, inputClasses } from '../../styles/styles'
+import { buttonClasses, inputStyles } from '../../styles/styles'
 import { contactFormRequirements, ContactPOSTbody, ContactPOSTresponse } from '@/app/api/contact/route'
 import { useNotifications } from '@/providers/notifications'
 
@@ -102,7 +102,7 @@ export default function ContactForm() {
           onChange={handleInputChange}
           required
           maxLength={contactFormRequirements.maxNameLength}
-          className={inputClasses}
+          className={inputStyles.base}
         />
       </div>
 
@@ -116,7 +116,7 @@ export default function ContactForm() {
           onChange={handleInputChange}
           required
           maxLength={contactFormRequirements.maxNameLength}
-          className={inputClasses}
+          className={inputStyles.base}
         />
       </div>
 
@@ -129,7 +129,7 @@ export default function ContactForm() {
           value={formData.email}
           onChange={handleInputChange}
           required
-          className={inputClasses}
+          className={inputStyles.base}
         />
       </div>
 
@@ -142,7 +142,7 @@ export default function ContactForm() {
           onChange={handleInputChange}
           required
           maxLength={contactFormRequirements.maxMessageLength}
-          className={inputClasses}
+          className={inputStyles.base}
         ></textarea>
       </div>
 
@@ -152,7 +152,7 @@ export default function ContactForm() {
           disabled={!formReady}
           className={clsx(
             buttonClasses.primary.base,
-            !formReady ? buttonClasses.primary.disabled : buttonClasses.primary.active,
+            !formReady ? buttonClasses.disabled : buttonClasses.primary.active,
           )}
         >
           {loading ? 'Sending...' : 'Send'}
