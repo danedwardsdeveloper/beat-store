@@ -6,9 +6,9 @@ import sharp from 'sharp'
 import protectedRoute from '@/library/auth/protectedRoute'
 import { checkFileExists, S3ContentType, uploadToS3 } from '@/library/aws/s3'
 import prisma from '@/library/database/prisma'
+import sanitiseFileName from '@/library/formatting/sanitiseFileName'
 import { generateSocialImage } from '@/library/images/generateImages'
 import logger from '@/library/misc/logger'
-import sanitiseFileName from '@/library/misc/sanitiseFileName'
 
 import { BasicMessages, HttpStatus } from '@/types'
 

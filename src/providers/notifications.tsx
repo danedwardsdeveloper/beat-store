@@ -2,31 +2,29 @@
 
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
 
-import NotificationContainer from '@/components/notifications/NotificationContainer'
-
-export interface NotificationInterface {
+export interface NotificationWithId {
   id: number
   title: string
   message: string
 }
 
-interface CreateNotificationParams {
+export interface NotificationInterface {
   title: string
   message: string
 }
 
 interface NotificationsContextType {
-  createNotification: (params: CreateNotificationParams) => void
+  createNotification: (params: NotificationInterface) => void
   removeNotification: (id: number) => void
-  notifications: NotificationInterface[] | null
+  notifications: NotificationWithId[] | null
 }
 
 const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined)
 
 export function NotificationsProvider({ children }: { children: ReactNode }) {
-  const [notifications, setNotifications] = useState<NotificationInterface[] | null>(null)
+  const [notifications, setNotifications] = useState<NotificationWithId[] | null>(null)
 
-  const createNotification = useCallback((params: CreateNotificationParams) => {
+  const createNotification = useCallback((params: NotificationInterface) => {
     const id = Date.now()
     setNotifications(prev => {
       if (!prev) return [{ id, title: params.title, message: params.message }]
@@ -41,7 +39,6 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   return (
     <NotificationsContext.Provider value={{ notifications, createNotification, removeNotification }}>
       {children}
-      <NotificationContainer />
     </NotificationsContext.Provider>
   )
 }

@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { MenuItem } from './data'
-import { menuItemStyles } from '@/app/(front-end)/styles/styles'
+import { useUi } from '@/providers/ui'
+import { menuItemStyles } from '@/styles'
 
 export default function MenuLink({
   menuItem,
@@ -13,9 +14,11 @@ export default function MenuLink({
   variant: 'mobile' | 'desktop'
 }) {
   const pathname = usePathname()
+  const { setMobilePanelOpen } = useUi()
   return (
     <Link
       href={menuItem.href}
+      onClick={variant === 'mobile' ? () => setMobilePanelOpen(false) : () => null}
       className={clsx(
         menuItemStyles.base,
         pathname === menuItem.href ? menuItemStyles.active : menuItemStyles.inactive,

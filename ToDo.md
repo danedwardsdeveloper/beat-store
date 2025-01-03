@@ -1,39 +1,45 @@
 # Current task
 
+1. Hide password button
+2. Loading spinner
+3. Make sure cookies work properly
+4. Set the social image properly before you deploy anything!
+
 # Other tasks
 
+1. Sign out button
 2. Beat page
    - Think about the content...
    - Styling
 3. Favicon
-4. Mobile menu
-   - layout provider
-5. Audio player
+4. Audio player
+   - Make intersection observer more efficient and not loop
    - Style
-   - Make functional
-6. Articles
+   - Add more buttons
+5. Articles
    - Beat website marketing best practices
    - Simple trick to sell more beats
-7. Pricing section
-8. Notifications
+6. Pricing section
+7. Notifications
    - Add 'success' | 'error' | 'information'
-9. Contact form
+8. Contact form
    - Make error handling more robust
-10. Newsletter section
-    - Free resource on sign up
-11. Direct contact form
-12. Deploy and add to my developer site
-13. Signed URLs for protected assets
-14. Think about friction-free checkout process
-15. Admin page
+9. Newsletter section
+   - Free resource on sign up
+10. Direct contact form
+11. Deploy and add to my developer site
+12. Signed URLs for protected assets
+13. Think about friction-free checkout process
+14. Admin page
     - Styling
     - Make functional
     - Add more beats to test
-16. Create the account page
+15. Create the account page
     - Signed in page
     - Sign in page
     - Create account page
     - Email confirmations
+16. Cart notification
 17. Cart page
     - Style
     - Make functional

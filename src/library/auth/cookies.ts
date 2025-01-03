@@ -3,7 +3,12 @@ import { isProduction } from '../environment/publicVariables'
 export enum CookieName {
   token = 'token',
 }
-const twoWeeksInSeconds = 365 * 24 * 60 * 60
+
+export enum CookieDurations {
+  zero = 0,
+  oneHour = 60 * 60,
+  twoWeeks = 365 * 24 * 60 * 60,
+}
 
 type CookieOptions = {
   name: CookieName
@@ -11,30 +16,18 @@ type CookieOptions = {
   httpOnly: boolean
   secure: boolean
   sameSite: 'strict'
-  maxAge: number
+  maxAge: CookieDurations
   path: string
 }
 
-export function createCookieOptions(tokenValue: string): CookieOptions {
+export function createCookieOptions(tokenValue: string, duration: CookieDurations): CookieOptions {
   return {
     name: CookieName.token,
     value: tokenValue,
     httpOnly: true,
     secure: isProduction,
     sameSite: 'strict',
-    maxAge: twoWeeksInSeconds,
-    path: '/',
-  }
-}
-
-export function createClearCookieOptions(): CookieOptions {
-  return {
-    name: CookieName.token,
-    value: '',
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: 'strict',
-    maxAge: 0,
+    maxAge: duration,
     path: '/',
   }
 }
@@ -44,9 +37,9 @@ export interface TokenPayload {
   exp: number
 }
 
-export function generateTokenPayload(userId: string): TokenPayload {
+export function generateTokenPayload(userId: string, duration: CookieDurations): TokenPayload {
   return {
     sub: userId,
-    exp: Math.floor(Date.now() / 1000) + twoWeeksInSeconds,
+    exp: Math.floor(Date.now() / 1000) + duration,
   }
 }
