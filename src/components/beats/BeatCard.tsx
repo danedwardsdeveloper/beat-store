@@ -1,26 +1,57 @@
 'use client'
 
+import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
 import { getPrice } from '@/library/beats/prices'
-import logger from '@/library/misc/logger'
 
-import { PlayIcon } from '../Icons'
-import { useLayout } from '@/providers/layout'
+import PlayPauseIcon from '../icons/PlayPauseIcon'
+import { useAudioPlayer } from '@/providers/audio'
+import { useUi } from '@/providers/ui'
 import { PublicBeatWithAssets } from '@/types'
 
-export default function BeatCard({ beat }: { beat: PublicBeatWithAssets }) {
-  const { setShowAudioPlayer } = useLayout()
+export default function BeatCard({
+  beat,
+  eagerLoading,
+}: {
+  beat: PublicBeatWithAssets
+  eagerLoading: boolean
+}) {
+  const player = useAudioPlayer(beat)
+  const { setShowAudioPlayer } = useUi()
 
-  const handlePlay = (event: React.MouseEvent) => {
+  const cardRef = useRef<HTMLAnchorElement>(null)
+
+  function handleClick(event: React.MouseEvent) {
     event.preventDefault()
     setShowAudioPlayer(true)
-    logger.info('Playing beat:', beat.title)
+    player.toggle(beat)
   }
+
+  useEffect(() => {
+    if (!cardRef.current) return
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            player.preload(beat)
+          }
+        })
+      },
+      { rootMargin: '50px' },
+    )
+
+    observer.observe(cardRef.current)
+
+    return () => observer.disconnect()
+  }, [beat, player])
 
   return (
     <Link
+      ref={cardRef}
       href={`/beats/${beat.slug}`}
       className="flex flex-col justify-start gap-y-2 p-4 group rounded-lg hover:bg-white/10 transition-colors duration-300"
     >
@@ -28,16 +59,21 @@ export default function BeatCard({ beat }: { beat: PublicBeatWithAssets }) {
         <Image
           src={beat.assetUrls.artworkFull}
           alt={beat.metaDescription}
-          height={300}
-          width={300}
+          height={400}
+          width={400}
           className="rounded shrink-0"
+          priority={eagerLoading}
         />
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
+        <div className="absolute inset-0 flex items-center justify-center md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
           <button
-            onClick={handlePlay}
-            className="p-2 rounded-full hover:bg-black/20 active:bg-black/50 transition-colors duration-300 text-zinc-400 hover:text-zinc-300"
+            onClick={handleClick}
+            className={clsx(
+              'p-2 rounded-full transition-colors duration-300',
+              'active:bg-black/50 hover:bg-black/20  md:text-zinc-400 md:hover:text-zinc-300', // Hidden unless hover on desktop
+              'text-zinc-300 bg-black/50', // Play button always visible on mobile
+            )}
           >
-            <PlayIcon />
+            <PlayPauseIcon size="size-14" />
           </button>
         </div>
       </div>

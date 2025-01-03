@@ -1,44 +1,22 @@
 import { NextResponse } from 'next/server'
 
+import { sendEmail } from '@/library/email/emailClient'
+import createContactFormNotification from '@/library/email/templates/contactFormNotification'
 import logger from '@/library/misc/logger'
 
-import { BasicMessages, HttpStatus } from '@/types'
-
-export interface ContactPOSTbody {
-  firstName: string
-  lastName: string
-  email: string
-  message: string
-}
-
-export const contactFormRequirements = {
-  maxNameLength: 50,
-  maxMessageLength: 1000,
-}
-
-export interface ContactPOSTresponse {
-  message:
-    | BasicMessages
-    | 'missing input'
-    | 'invalid input'
-    | `name(s) too long`
-    | 'message too long'
-    | 'invalid email'
-}
+import { HttpStatus } from '@/types'
+import { contactFormRequirements, ContactPOSTbody, ContactPOSTresponse } from '@/types'
 
 export async function POST(request: Request): Promise<NextResponse<ContactPOSTresponse>> {
   try {
-    const { firstName, lastName, email, message }: ContactPOSTbody = await request.json()
+    const { firstName, email, message }: ContactPOSTbody = await request.json()
 
-    if (!firstName || !lastName || !email || !message) {
+    if (!firstName || !email || !message) {
       return NextResponse.json({ message: 'missing input' }, { status: HttpStatus.http400badRequest })
     }
 
-    if (
-      firstName.length > contactFormRequirements.maxNameLength ||
-      lastName.length > contactFormRequirements.maxNameLength
-    ) {
-      return NextResponse.json({ message: `name(s) too long` }, { status: HttpStatus.http400badRequest })
+    if (firstName.length > contactFormRequirements.maxNameLength) {
+      return NextResponse.json({ message: `name too long` }, { status: HttpStatus.http400badRequest })
     }
 
     if (message.length > contactFormRequirements.maxMessageLength) {
@@ -55,21 +33,23 @@ export async function POST(request: Request): Promise<NextResponse<ContactPOSTre
         .trim()
         .replace(/<[^>]*>/g, '')
         .replace(/[<>'";&]/g, ''),
-      lastName: lastName
-        .trim()
-        .replace(/<[^>]*>/g, '')
-        .replace(/[<>'";&]/g, ''),
       email: email.toLowerCase().trim(),
       message: message
         .trim()
         .replace(/<[^>]*>/g, '')
-        .replace(/[<>'";&]/g, ''),
+        .replace(/[<>'";&]/g, '')
+        .replace(/\n/g, '<br>'),
     }
 
-    // Send email to myself
-    logger.info('Contact form submission:', JSON.stringify(sanitisedData))
-
-    return NextResponse.json({ message: 'success' }, { status: HttpStatus.http200ok })
+    const emailContent = createContactFormNotification({ firstName, email, message })
+    const emailResponse = await sendEmail(emailContent)
+    if (emailResponse.success) {
+      logger.info('Contact form submission:', JSON.stringify(sanitisedData))
+      return NextResponse.json({ message: 'success' }, { status: HttpStatus.http200ok })
+    } else {
+      logger.error('Error sending email to myself')
+      return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
+    }
   } catch (error) {
     logger.error('Contact form error:', error)
     return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })

@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 
-import { AccountIcon, ShoppingIcon } from './Icons'
+import { AccountIcon, ShoppingIcon } from '../icons/definitions/MenuIcons'
 
 export const homeMenuItem: MenuItem = {
   text: {

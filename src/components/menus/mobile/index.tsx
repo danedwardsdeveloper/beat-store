@@ -4,38 +4,45 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { ThreeBarsIcon } from '@/components/icons'
+
 import { homeMenuItem, iconMenuItems } from '../data'
-import MenuIcon from './MenuIcon'
+import MenuLink from '../MenuLink'
 import Panel from './Panel'
-import { menuItemStyles } from '@/app/(front-end)/styles/styles'
-import { useLayout } from '@/providers/layout'
+import { useUi } from '@/providers/ui'
+import { backgroundClasses, menuItemStyles, zIndexStyles } from '@/styles'
 
 export default function MobileMenu() {
+  const { mobilePanelOpen, setMobilePanelOpen, toggleMobilePanel } = useUi()
   const pathname = usePathname()
-  const { mobilePanelOpen, toggleMobilePanel } = useLayout()
 
   return (
-    <nav className="md:hidden">
-      <div className=" flex bg-slate-950  items-center px-3 py-3 justify-between w-full">
+    <nav
+      data-component="MobileMenu"
+      className={clsx('fixed md:hidden w-full top-0', backgroundClasses.primary, zIndexStyles.menuBars)}
+    >
+      <div className={clsx('flex items-center px-3 py-3 justify-between w-full', zIndexStyles.menuBars)}>
+        <button onClick={() => toggleMobilePanel()} className="flex items-center w-20">
+          <ThreeBarsIcon />
+        </button>
+
+        <MenuLink menuItem={homeMenuItem} variant={'mobile'} />
+
         <div className="flex space-x-4">
           {iconMenuItems.map((item, index) => (
-            <Link href={item.href} key={index}>
+            <Link
+              href={item.href}
+              key={index}
+              onClick={() => setMobilePanelOpen(false)}
+              className={clsx(
+                'p-1 rounded transition-colors duration-300',
+                pathname === item.href ? menuItemStyles.active : menuItemStyles.inactive,
+              )}
+            >
               <item.icon />
             </Link>
           ))}
         </div>
-        <Link
-          href={homeMenuItem.href}
-          className={clsx(
-            menuItemStyles.base,
-            pathname === homeMenuItem.href ? menuItemStyles.active : menuItemStyles.inactive,
-          )}
-        >
-          {homeMenuItem.text.mobile}
-        </Link>
-        <button onClick={() => toggleMobilePanel()}>
-          <MenuIcon menuOpen={true} />
-        </button>
       </div>
       <Panel panelOpen={mobilePanelOpen} />
     </nav>

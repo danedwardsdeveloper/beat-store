@@ -1,14 +1,29 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 
-import { buttonClasses } from '@/app/(front-end)/styles/styles'
+import { buttonClasses } from '@/styles'
 
-export default function CtaButton() {
+const variantData = {
+  primary: {
+    // href: 'https://www.upwork.com/',
+    href: '/',
+    text: 'Get your store',
+    classes: clsx(buttonClasses.base, buttonClasses.primary.base, buttonClasses.primary.active),
+  },
+  secondary: {
+    // href: '/articles/learn-more',
+    href: '/',
+    text: 'Learn more',
+    classes: clsx(buttonClasses.base, buttonClasses.secondary.base, buttonClasses.secondary.active),
+  },
+} as const
+
+export default function CtaButton({ variant }: { variant: 'primary' | 'secondary' }) {
+  const data = variantData[variant]
+
   return (
-    <div className="max-w-xs mx-auto w-full px-8">
-      <Link href="/" className={clsx(buttonClasses.primary, 'block w-full')}>
-        Get your store
-      </Link>
-    </div>
+    <Link href={data.href} className={clsx(data.classes, 'block w-full')}>
+      {data.text}
+    </Link>
   )
 }

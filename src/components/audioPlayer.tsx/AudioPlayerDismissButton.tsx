@@ -1,6 +1,17 @@
-import { useLayout } from '@/providers/layout'
+import { useAudioPlayer } from '@/providers/audio'
+import { useUi } from '@/providers/ui'
 
 export default function AudioPlayerDismissButton() {
-  const { setShowAudioPlayer } = useLayout()
-  return <button onClick={() => setShowAudioPlayer(false)}>Dismiss</button>
+  const { setShowAudioPlayer } = useUi()
+  const player = useAudioPlayer()
+  return (
+    <button
+      onClick={() => {
+        setShowAudioPlayer(false)
+        player.pause()
+      }}
+    >
+      Dismiss
+    </button>
+  )
 }

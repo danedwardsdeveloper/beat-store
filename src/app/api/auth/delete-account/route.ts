@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { CookieName, createClearCookieOptions, TokenPayload } from '@/library/auth/cookies'
+import { CookieDurations, CookieName, createCookieOptions, TokenPayload } from '@/library/auth/cookies'
 import prisma from '@/library/database/prisma'
 import { jwtSecret } from '@/library/environment/privateVariables'
 import logger from '@/library/misc/logger'
@@ -46,7 +46,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<DeleteA
       { message: 'success' } as DeleteAccountResponseDELETE, //
       { status: 200 },
     )
-    response.cookies.set('token' as CookieName, '', createClearCookieOptions())
+    response.cookies.set('token' as CookieName, '', createCookieOptions('', CookieDurations.zero))
 
     return response
   } catch (error) {
