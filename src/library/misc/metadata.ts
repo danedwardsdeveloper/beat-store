@@ -4,9 +4,6 @@ import { PublicBeatWithAssets } from '@/types'
 
 import { productionBaseURL } from '../environment/publicVariables'
 
-export const defaultMetaDescription =
-  'Beat Store is a modern high-performance e-commerce website for selling beats. Get yours today.'
-
 export function generateBeatMetadata({ beat }: { beat: PublicBeatWithAssets }): Metadata {
   const canonical = `${productionBaseURL}/beats/${beat.slug}`
 
