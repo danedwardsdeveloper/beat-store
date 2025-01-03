@@ -1,6 +1,6 @@
 'use client'
 
-import { IconSizes, SvgContainer } from './SvgContainer'
+import { IconSizes, SvgContainer } from './definitions/SvgContainer'
 import { useAudioPlayer } from '@/providers/audio'
 
 export function PlayIcon({ size }: { size?: IconSizes }) {
