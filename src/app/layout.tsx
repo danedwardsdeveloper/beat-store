@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { defaultMetaDescription } from '@/library/misc/metadata'
+import { marketingCopy } from '@/library/misc/marketingCopy'
 
 import AudioPlayer from '@/components/audioPlayer.tsx'
 import Footer from '@/components/Footer'
@@ -21,7 +21,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Beat Store | Home',
-  description: defaultMetaDescription,
+  description: marketingCopy.metaDescription,
 }
 
 export default function RootLayout({
