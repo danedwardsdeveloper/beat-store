@@ -1,11 +1,12 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 
-import tempImage from '@/app/(front-end)/(home-page)/components/hero/hero.png'
 import Heading from '@/components/Heading'
 
 import { articles } from './data'
 import { zIndexStyles } from '@/styles'
+
+import tempImage from '@/images/custom-high-performance-beat-store.png'
 
 export default function ArticlesPage() {
   return (
