@@ -18,11 +18,17 @@ const variantData = {
   },
 } as const
 
-export default function CtaButton({ variant }: { variant: 'primary' | 'secondary' }) {
+export default function CtaButton({
+  variant,
+  classes,
+}: {
+  variant: 'primary' | 'secondary'
+  classes?: string
+}) {
   const data = variantData[variant]
 
   return (
-    <Link href={data.href} className={clsx(data.classes, 'block w-full')}>
+    <Link href={data.href} className={clsx(data.classes, 'block w-full', classes)}>
       {data.text}
     </Link>
   )
