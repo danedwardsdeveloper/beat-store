@@ -7,7 +7,8 @@ import { useEffect, useRef } from 'react'
 
 import { getPrice } from '@/library/beats/prices'
 
-import PlayPauseIcon from '../icons/PlayPauseIcon'
+import PlayPauseIcon from '@/components/icons/PlayPauseIcon'
+
 import { useAudioPlayer } from '@/providers/audio'
 import { useUi } from '@/providers/ui'
 import { PublicBeatWithAssets } from '@/types'
