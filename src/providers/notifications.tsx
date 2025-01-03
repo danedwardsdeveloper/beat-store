@@ -2,13 +2,8 @@
 
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
 
-export interface NotificationWithId {
-  id: number
-  title: string
-  message: string
-}
-
 export interface NotificationInterface {
+  id: number
   title: string
   message: string
 }
@@ -16,13 +11,13 @@ export interface NotificationInterface {
 interface NotificationsContextType {
   createNotification: (params: NotificationInterface) => void
   removeNotification: (id: number) => void
-  notifications: NotificationWithId[] | null
+  notifications: NotificationInterface[] | null
 }
 
 const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined)
 
 export function NotificationsProvider({ children }: { children: ReactNode }) {
-  const [notifications, setNotifications] = useState<NotificationWithId[] | null>(null)
+  const [notifications, setNotifications] = useState<NotificationInterface[] | null>(null)
 
   const createNotification = useCallback((params: NotificationInterface) => {
     const id = Date.now()
