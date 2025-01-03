@@ -1,106 +1,58 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
-import clsx from 'clsx'
 
-import { backgroundClasses, buttonClasses } from '@/styles'
+import { marketingCopy } from '@/library/misc/marketingCopy'
 
-const includedFeatures = [
-  'Private forum access',
-  'Member resources',
-  'Entry to annual conference',
-  'Official member t-shirt',
-]
+import CtaButton from './CtaButton'
 
-const textBrightestClasses = 'text-zinc-100'
-const textSecondBrightestClasses = 'text-gray-400'
-const subtleRingClasses = 'ring-gray-700'
-
-const moreTextClasses = 'text-gray-400'
-const grayOneHundredClasses = 'bg-gray-100'
-const accentClasses = 'text-indigo-400'
-const secondaryBackgroundClasses = 'bg-black/20'
-const ringTwoClasses = 'ring-gray-900/5'
-
-// cspell:disable
 export default function Pricing() {
   return (
-    <div className={clsx('py-24 sm:py-32', backgroundClasses.primary)}>
+    <div data-component="Pricing" className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl sm:text-center">
-          <h2
-            className={clsx(
-              'text-pretty text-5xl font-semibold tracking-tight sm:text-balance sm:text-6xl',
-              textBrightestClasses,
-            )}
-          >
-            Simple no-tricks pricing
+          <h2 className="text-pretty text-5xl font-semibold tracking-tight sm:text-balance sm:text-6xl text-zinc-100">
+            {marketingCopy.pricing.titles.sectionTitle}
           </h2>
-          <p
-            className={clsx(
-              'mx-auto mt-6 max-w-2xl text-pretty text-lg font-medium sm:text-xl/8',
-              textSecondBrightestClasses,
-            )}
-          >
-            Distinctio et nulla eum soluta et neque labore quibusdam. Saepe et quasi iusto modi velit ut non
-            voluptas in. Explicabo id ut laborum.
+          <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg font-medium sm:text-xl/8 text-zinc-400">
+            {marketingCopy.pricing.intros.sectionIntro}
           </p>
         </div>
-        <div
-          className={clsx(
-            'mx-auto mt-16 max-w-2xl rounded-3xl ring-1 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none',
-            subtleRingClasses,
-          )}
-        >
+        <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none ring-zinc-700">
           <div className="p-8 sm:p-10 lg:flex-auto">
-            <h3 className={clsx('text-3xl font-semibold tracking-tight', textBrightestClasses)}>
-              Lifetime membership
+            <h3 className="text-3xl font-semibold tracking-tight text-zinc-100">
+              {marketingCopy.pricing.titles.cardTitle}
             </h3>
-            <p className={clsx('mt-6 text-base/7 ', moreTextClasses)}>
-              Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis
-              blanditiis repellendus etur quidem assumenda.
-            </p>
+            <p className="mt-6 text-base/7 text-zinc-400">{marketingCopy.pricing.intros.cardIntro}</p>
             <div className="mt-10 flex items-center gap-x-4">
-              <h4
-                className={clsx('flex-none text-sm/6 font-semibold', accentClasses)}
-              >{`What's included`}</h4>
-              <div className={clsx('h-px flex-auto', grayOneHundredClasses)} />
+              <h4 className="flex-none text-sm/6 font-semibold text-indigo-500">
+                {marketingCopy.pricing.whatsIncluded.title}
+              </h4>
+              <div className="h-px flex-auto bg-zinc-700" />
             </div>
             <ul
               role="list"
-              className={clsx(
-                'mt-8 grid grid-cols-1 gap-4 text-sm/6 sm:grid-cols-2 sm:gap-6',
-                moreTextClasses,
-              )}
+              className="mt-8 grid grid-cols-1 gap-4 text-sm/6 sm:grid-cols-2 sm:gap-6',
+                'text-zinc-400"
             >
-              {includedFeatures.map(feature => (
+              {marketingCopy.pricing.whatsIncluded.items.map(feature => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className={clsx('h-6 w-5 flex-none', accentClasses)} />
+                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-500" />
                   {feature}
                 </li>
               ))}
             </ul>
           </div>
           <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:shrink-0">
-            <div
-              className={clsx(
-                'rounded-2xl py-10 text-center ring-1 ring-inset lg:flex lg:flex-col lg:justify-center lg:py-16',
-                secondaryBackgroundClasses,
-                ringTwoClasses,
-              )}
-            >
+            <div className="rounded-2xl py-10 text-center ring-1 ring-inset lg:flex lg:flex-col lg:justify-center lg:py-16 ring-gray-900/5">
               <div className="mx-auto max-w-xs px-8">
-                <p className={clsx('text-base font-semibold', moreTextClasses)}>Pay once, own it forever</p>
+                <p className="text-base font-semibold text-zinc-400">{marketingCopy.pricing.extras[0]}</p>
                 <p className="mt-6 flex items-baseline justify-center gap-x-2">
-                  <span className={clsx('text-5xl font-semibold tracking-tight', textBrightestClasses)}>
-                    $649
+                  <span className="text-5xl font-semibold tracking-tight text-zinc-100">
+                    {marketingCopy.pricing.usdPriceString}
                   </span>
-                  <span className={clsx('text-sm/6 font-semibold tracking-wide', moreTextClasses)}>USD</span>
+                  <span className="text-sm/6 font-semibold tracking-wide text-zinc-400">USD</span>
                 </p>
-                <a href="#" className={clsx('mt-10 block w-full', buttonClasses.primary)}>
-                  Get your store
-                </a>
-                <p className={clsx('mt-6 text-xs/5', moreTextClasses)}>
-                  Invoices and receipts available for easy company reimbursement
-                </p>
+                <CtaButton variant={'primary'} classes="mt-10" />
+                <p className="mt-6 text-xs/5 text-zinc-400">{marketingCopy.pricing.extras[1]}</p>
               </div>
             </div>
           </div>
