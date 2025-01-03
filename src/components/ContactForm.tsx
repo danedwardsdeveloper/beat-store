@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import generateRandomDelay from '@/library/misc/generateRandomDelay'
 import logger from '@/library/misc/logger'
+import { marketingCopy } from '@/library/misc/marketingCopy'
 
 import HoneyPot from '@/components/HoneyPot'
 
@@ -32,6 +33,7 @@ export default function ContactForm() {
   const successNotification: NotificationInterface = {
     title: 'Message sent successfully',
     message: `We'll get back to you as soon as we can`,
+    id: Date.now(),
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -86,12 +88,9 @@ export default function ContactForm() {
         <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <h2 className="text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              Get in touch
+              {marketingCopy.contact.title}
             </h2>
-            <p className="mt-6 text-lg/8 text-gray-300">
-              Proin volutpat consequat porttitor cras nullam gravida at. Orci molestie a eu arcu. Sed ut
-              tincidunt integer elementum id sem. Arcu sed malesuada et magna.
-            </p>
+            <p className="mt-6 text-lg/8 text-gray-300">{marketingCopy.contact.intro}</p>
           </div>
         </div>
         <form onSubmit={handleSubmit} className="px-6 pb-24 sm:pb-32 lg:px-8 lg:py-48">
