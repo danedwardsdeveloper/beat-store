@@ -4,16 +4,14 @@ import CtaButton from '@/components/CtaButton'
 
 import { menuItemsData } from '../data'
 import MenuLink from '../MenuLink'
-import { menuBorderStyles, zIndexStyles } from '@/styles'
 
 export default function Panel({ panelOpen = false }: { panelOpen: boolean }) {
   return (
     <div
       data-component="MobilePanel"
       className={clsx(
-        'absolute flex flex-col w-full bg-slate-900 overflow-hidden transition-all duration-500 ease-in-out',
-        zIndexStyles.menuBars,
-        menuBorderStyles,
+        'absolute flex flex-col w-full border-b overflow-hidden transition-all duration-500 ease-in-out',
+        'z-menu-bar bg-secondary border-primary',
         panelOpen ? 'h-52' : 'h-0',
       )}
     >

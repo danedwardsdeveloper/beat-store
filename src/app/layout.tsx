@@ -10,7 +10,6 @@ import Menus from '@/components/menus'
 import NotificationContainer from '@/components/notifications/NotificationsContainer'
 import Providers from '@/components/Providers'
 
-import { audioPlayerOffsetStyles, backgroundClasses, menuBarOffsetStyles, textColourClasses } from '@/styles'
 import '@/styles/globals.tailwind.css'
 
 const inter = Inter({
@@ -33,15 +32,21 @@ export default function RootLayout({
     <html lang="en-GB" className={inter.variable}>
       <body
         className={clsx(
-          'flex flex-col min-h-screen',
+          'flex flex-col min-h-screen', //
+          'bg-primary text-primary',
           'antialiased font-sans',
-          backgroundClasses.primary,
-          textColourClasses.paragraph,
         )}
       >
         <Providers>
           <Menus />
-          <main className={clsx('flex-1', audioPlayerOffsetStyles, menuBarOffsetStyles)}>{children}</main>
+          <main
+            className={clsx(
+              'flex-1', //
+              'mt-menu-bar mb-audio-player',
+            )}
+          >
+            {children}
+          </main>
           <Footer />
           <AudioPlayer />
           <NotificationContainer />

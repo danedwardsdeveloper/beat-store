@@ -10,7 +10,7 @@ import { homeMenuItem, iconMenuItems } from '../data'
 import MenuLink from '../MenuLink'
 import Panel from './Panel'
 import { useUi } from '@/providers/ui'
-import { backgroundClasses, menuItemStyles, zIndexStyles } from '@/styles'
+import { menuItemStyles } from '@/styles'
 
 export default function MobileMenu() {
   const { mobilePanelOpen, setMobilePanelOpen, toggleMobilePanel } = useUi()
@@ -19,9 +19,17 @@ export default function MobileMenu() {
   return (
     <nav
       data-component="MobileMenu"
-      className={clsx('fixed md:hidden w-full top-0', backgroundClasses.primary, zIndexStyles.menuBars)}
+      className={clsx(
+        'fixed md:hidden w-full top-0', //
+        'bg-primary z-menu-bar',
+      )}
     >
-      <div className={clsx('flex items-center px-3 py-3 justify-between w-full', zIndexStyles.menuBars)}>
+      <div
+        className={clsx(
+          'flex items-center px-3 py-3 justify-between w-full', //
+          'z-menu-bar',
+        )}
+      >
         <button onClick={() => toggleMobilePanel()} className="flex items-center w-20">
           <ThreeBarsIcon />
         </button>

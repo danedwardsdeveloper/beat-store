@@ -1,4 +1,5 @@
 import { QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import clsx from 'clsx'
 import Image from 'next/image'
 
 // cspell:disable
@@ -101,7 +102,10 @@ export default function CartPage() {
         {/* Order summary */}
         <section
           aria-labelledby="summary-heading"
-          className="mt-16 rounded-lg bg-slate-900 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
+          className={clsx(
+            'mt-16 rounded-lg px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8', //
+            'bg-secondary',
+          )}
         >
           <h2 id="summary-heading" className="text-lg font-medium text-white">
             Order summary
