@@ -11,7 +11,7 @@ import FormContainer from '../FormContainer'
 import { SignInPOSTbody, SignInPOSTresponse } from '@/app/api/auth/sign-in/route'
 import { useLocalStorage } from '@/providers/localStorage'
 import { useUi } from '@/providers/ui'
-import { buttonClasses, formStyles } from '@/styles'
+import { formStyles } from '@/styles'
 
 type FormDataWithHoneyPot = SignInPOSTbody & {
   website: string
@@ -177,10 +177,7 @@ export default function SignInForm() {
         <Honeypot value={bodyWithHoneyPot.website} onChange={handleInputChange} />
 
         <div>
-          <button
-            type="submit"
-            className={clsx(buttonClasses.base, buttonClasses.primary.base, buttonClasses.primary.active)}
-          >
+          <button type="submit" className="button-primary w-full">
             {isLoading ? 'Loading...' : 'Sign in'}
           </button>
         </div>
