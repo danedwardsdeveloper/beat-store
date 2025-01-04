@@ -9,13 +9,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/images/:path*',
-        destination: 'https://d1ttulk89fbidl.cloudfront.net/:path*',
-        basePath: false,
-        locale: false,
-      },
-      {
-        source: '/audio/:path*',
+        source: '/(images|audio)/:path*',
         destination: 'https://d1ttulk89fbidl.cloudfront.net/:path*',
         basePath: false,
         locale: false,
@@ -37,6 +31,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Redirect from www.
       {
         source: '/:path*',
         has: [
@@ -48,6 +43,7 @@ const nextConfig: NextConfig = {
         destination: 'https://beatstore.co.uk/:path*',
         permanent: true,
       },
+      // Redirect from .fly.dev to custom domain (eventually)
       {
         source: '/:path*',
         has: [
@@ -56,7 +52,6 @@ const nextConfig: NextConfig = {
             value: 'beat-store.fly.dev',
           },
         ],
-        // ToDO: Change to beatstore.co.uk
         destination: 'https://beat-store.fly.dev/:path*',
         permanent: true,
       },
