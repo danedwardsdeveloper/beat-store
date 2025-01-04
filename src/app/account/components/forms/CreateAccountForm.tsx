@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import CheckBox from '../CheckBox'
 import FormContainer from '../FormContainer'
-import { buttonClasses, formStyles } from '@/styles'
+import { formStyles } from '@/styles'
 
 export default function CreateAccountForm() {
   return (
@@ -90,10 +90,7 @@ export default function CreateAccountForm() {
         </div>
 
         <div>
-          <button
-            type="submit"
-            className={clsx(buttonClasses.base, buttonClasses.primary.base, buttonClasses.primary.active)}
-          >
+          <button type="submit" className="button-primary w-full">
             Create account
           </button>
         </div>
