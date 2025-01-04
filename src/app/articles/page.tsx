@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Heading from '@/components/Heading'
 
 import { articles } from './data'
-import { zIndexStyles } from '@/styles'
 
 import tempImage from '@/images/custom-high-performance-beat-store.png'
 
@@ -33,7 +32,7 @@ export default function ArticlesPage() {
                     href={post.category.href}
                     className={clsx(
                       'relative rounded-full bg-zinc-700 px-3 py-1.5 font-medium text-zinc-300 hover:bg-zinc-800 transition-colors duration-300',
-                      zIndexStyles.articleCategoryLink,
+                      'z-card-interaction',
                     )}
                   >
                     {post.category.title}
