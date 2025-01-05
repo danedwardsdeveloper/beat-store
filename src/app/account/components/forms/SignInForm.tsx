@@ -1,4 +1,5 @@
-import clsx from 'clsx'
+'use client'
+
 import { useState } from 'react'
 
 import generateRandomDelay from '@/library/misc/generateRandomDelay'
@@ -121,7 +122,6 @@ export default function SignInForm() {
               name="email"
               type="email"
               autoComplete="email"
-              className={formStyles.inputs}
               value={bodyWithHoneyPot.email}
               onChange={handleInputChange}
               required
@@ -139,7 +139,6 @@ export default function SignInForm() {
               name="password"
               type="password"
               autoComplete="current-password"
-              className={formStyles.inputs}
               value={bodyWithHoneyPot.password}
               onChange={handleInputChange}
               required
