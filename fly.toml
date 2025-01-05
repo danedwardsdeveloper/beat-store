@@ -1,8 +1,12 @@
+# fly.toml app configuration file generated for beat-store on 2025-01-05T09:57:50Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
 app = 'beat-store'
 primary_region = 'lhr'
 
 [build]
-  no_retry = true
 
 [http_service]
   internal_port = 3000
@@ -12,12 +16,12 @@ primary_region = 'lhr'
   min_machines_running = 0
   processes = ['app']
 
-[[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
-
 [[restart]]
   policy = 'on-failure'
   retries = 1
   processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
