@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "next build && tsx testServer.ts",
+    "start": "next start",
+    "start:local": "next build && tsx testServer.ts",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
     "test": "vitest",
