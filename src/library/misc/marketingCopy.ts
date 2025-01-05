@@ -1,5 +1,6 @@
 // cspell:disable
 export const marketingCopy = {
+  metaTitle: 'Beat Store | Sell more beats with a custom high-performance store',
   metaDescription:
     'Beat Store is a modern high-performance e-commerce website for selling beats. Get yours today.',
   storyBrand: {
