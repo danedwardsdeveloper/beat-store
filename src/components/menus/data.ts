@@ -2,6 +2,7 @@ import { ComponentType } from 'react'
 
 import { AccountIcon, ShoppingIcon } from '../icons/definitions/MenuIcons'
 
+// Todo: clean up this chaos
 export const homeMenuItem: MenuItem = {
   text: {
     desktop: 'Home',
