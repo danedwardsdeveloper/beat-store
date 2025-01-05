@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-  @apply text-balance text-4xl font-semibold tracking-tight text-zinc-100 sm:text-5xl;
+@layer base {
+  h1 {
+    @apply text-balance text-4xl font-semibold tracking-tight text-heading sm:text-5xl;
+  }
+
+  .button {
+    @apply font-semibold transition-colors duration-300 text-base rounded-md px-3 py-2 text-center shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+  .button:disabled {
+    @apply cursor-not-allowed;
+  }
+  input:not([type='hidden']),
+  textarea {
+    @apply w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-zinc-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6;
+  }
+  label {
+    @apply block text-sm/6 font-semibold text-white;
+  }
+}
+
+@layer components {
+  .button-primary {
+    @apply button text-button-primary bg-button-primary focus-visible:outline-button-primary;
+  }
+  .button-primary:not(:disabled) {
+    @apply cursor-pointer hover:bg-button-primary-hover active:bg-button-primary-active;
+  }
+
+  .button-secondary {
+    @apply button bg-white text-button-secondary focus-visible:outline-button-secondary;
+  }
+  .button-secondary:not(:disabled) {
+    @apply cursor-pointer hover:bg-button-secondary-hover active:bg-button-secondary-active;
+  }
 }
