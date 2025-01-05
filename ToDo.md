@@ -1,9 +1,11 @@
 # Current task
 
-1. Hide password button
-2. Loading spinner
-3. Make sure cookies work properly
-4. Set the social image properly before you deploy anything!
+1. Contact form
+
+- Hide/show password button
+- Loading spinner
+- Make sure cookies work properly
+- Set the social image properly before you deploy anything!
 
 # Other tasks
 
