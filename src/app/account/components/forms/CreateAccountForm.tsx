@@ -1,7 +1,5 @@
 'use client'
 
-import clsx from 'clsx'
-
 import CheckBox from '../CheckBox'
 import FormContainer from '../FormContainer'
 import { formStyles } from '@/styles'
@@ -15,14 +13,7 @@ export default function CreateAccountForm() {
             First name
           </label>
           <div className="mt-2">
-            <input
-              id="name"
-              name="name"
-              type="name"
-              required
-              autoComplete="given-name"
-              className={formStyles.inputs}
-            />
+            <input id="name" name="name" type="name" required autoComplete="given-name" />
           </div>
         </div>
 
@@ -31,14 +22,7 @@ export default function CreateAccountForm() {
             Email address
           </label>
           <div className="mt-2">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              className={formStyles.inputs}
-            />
+            <input id="email" name="email" type="email" required autoComplete="email" />
           </div>
         </div>
 
@@ -49,14 +33,7 @@ export default function CreateAccountForm() {
             </label>
           </div>
           <div className="mt-2">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              autoComplete="new-password"
-              className={formStyles.inputs}
-            />
+            <input id="password" name="password" type="password" required autoComplete="new-password" />
           </div>
         </div>
 
