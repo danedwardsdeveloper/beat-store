@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { fullFlyDomain } from '@/library/environment/publicVariables'
 import { marketingCopy } from '@/library/misc/marketingCopy'
 
 import AudioPlayer from '@/components/audioPlayer.tsx'
@@ -18,9 +19,47 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+const socialImageURL = `${fullFlyDomain}/beat-store.png`
+
 export const metadata: Metadata = {
-  title: 'Beat Store | Home',
+  title: marketingCopy.metaTitle,
   description: marketingCopy.metaDescription,
+  alternates: {
+    canonical: fullFlyDomain,
+  },
+  openGraph: {
+    title: marketingCopy.metaTitle,
+    description: marketingCopy.metaDescription,
+    url: fullFlyDomain,
+    siteName: 'Beat Store',
+    images: [
+      {
+        url: socialImageURL,
+        width: 1200,
+        height: 630,
+        alt: marketingCopy.metaTitle,
+      },
+    ],
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: marketingCopy.metaTitle,
+    description: marketingCopy.metaDescription,
+    images: [socialImageURL],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default function RootLayout({
