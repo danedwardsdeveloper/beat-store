@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import CtaButton from '../CtaButton'
 import { homeMenuItem, iconMenuItems, menuItemsData } from './data'
 import MenuLink from './MenuLink'
-import { backgroundClasses, menuBorderStyles, menuItemStyles, zIndexStyles } from '@/styles'
+import { menuItemStyles } from '@/styles'
 
 export default function DesktopMenu() {
   const pathname = usePathname()
@@ -16,16 +16,14 @@ export default function DesktopMenu() {
     <nav
       data-component="DesktopMenu"
       className={clsx(
-        'fixed top-0',
-        'hidden md:flex items-center px-6 py-3 justify-between w-full',
-        menuBorderStyles,
-        backgroundClasses.primary,
-        zIndexStyles.menuBars,
+        'fixed top-0 h-14',
+        'hidden md:flex items-center px-6 justify-between w-full border-b',
+        'bg-primary border-primary z-menu-bar',
       )}
     >
-      <ul className="flex space-x-4">
+      <ul className="flex space-x-4 h-full">
         {[homeMenuItem, ...menuItemsData].map(item => (
-          <li key={item.href}>
+          <li key={item.href} className="h-full">
             <MenuLink menuItem={item} variant="desktop" />
           </li>
         ))}
@@ -39,8 +37,8 @@ export default function DesktopMenu() {
                 href={item.href}
                 className={clsx(
                   menuItemStyles.base,
+                  'text-xl relative group p-1 rounded-md',
                   'flex items-center',
-                  'p-1',
                   pathname === item.href ? menuItemStyles.active : menuItemStyles.inactive,
                 )}
               >
