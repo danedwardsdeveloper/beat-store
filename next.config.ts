@@ -43,18 +43,6 @@ const nextConfig: NextConfig = {
         destination: 'https://beatstore.co.uk/:path*',
         permanent: true,
       },
-      // Redirect from .fly.dev to custom domain (eventually)
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'beat-store.fly.dev',
-          },
-        ],
-        destination: 'https://beat-store.fly.dev/:path*',
-        permanent: true,
-      },
     ]
   },
 }
