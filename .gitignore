@@ -39,3 +39,10 @@ Dockerfile
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Copyrighted material
+**/Hero.tsx
+**/Pricing.tsx
+**/Footer.tsx
+**/ContactForm.tsx
+src/components/notifications/
