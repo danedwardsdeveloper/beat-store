@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import CtaButton from '@/components/CtaButton'
 
 import { menuItemsData } from '../data'
-import MenuLink from '../MenuLink'
+import MobileMenuLink from './MobileMenuLink'
 
 export default function Panel({ panelOpen = false }: { panelOpen: boolean }) {
   return (
@@ -18,7 +18,7 @@ export default function Panel({ panelOpen = false }: { panelOpen: boolean }) {
       <ul className="flex flex-col gap-y-4 p-4">
         {menuItemsData.map((item, index) => (
           <li key={index}>
-            <MenuLink menuItem={item} variant={'mobile'} />
+            <MobileMenuLink menuItem={item} variant={'mobile'} />
           </li>
         ))}
         <li>

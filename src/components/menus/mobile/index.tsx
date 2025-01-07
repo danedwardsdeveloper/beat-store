@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { ThreeBarsIcon } from '@/components/icons'
 
 import { homeMenuItem, iconMenuItems } from '../data'
-import MenuLink from '../MenuLink'
+import MobileMenuLink from './MobileMenuLink'
 import Panel from './Panel'
 import { useUi } from '@/providers/ui'
 import { menuItemStyles } from '@/styles'
@@ -34,7 +34,7 @@ export default function MobileMenu() {
           <ThreeBarsIcon />
         </button>
 
-        <MenuLink menuItem={homeMenuItem} variant={'mobile'} />
+        <MobileMenuLink menuItem={homeMenuItem} variant={'mobile'} />
 
         <div className="flex space-x-4">
           {iconMenuItems.map((item, index) => (

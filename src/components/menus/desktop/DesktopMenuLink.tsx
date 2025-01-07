@@ -2,11 +2,10 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { MenuItem } from './data'
+import { MenuItem } from '../data'
 import { useUi } from '@/providers/ui'
 
-// Todo: Split into MobileMenuLink and DesktopMenuLink
-export default function MenuLink({
+export default function DesktopMenuLink({
   menuItem,
   variant,
 }: {

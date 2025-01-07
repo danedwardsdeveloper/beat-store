@@ -4,9 +4,9 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import CtaButton from '../CtaButton'
-import { homeMenuItem, iconMenuItems, menuItemsData } from './data'
-import MenuLink from './MenuLink'
+import CtaButton from '../../CtaButton'
+import { homeMenuItem, iconMenuItems, menuItemsData } from '../data'
+import DesktopMenuLink from './DesktopMenuLink'
 import { menuItemStyles } from '@/styles'
 
 export default function DesktopMenu() {
@@ -24,7 +24,7 @@ export default function DesktopMenu() {
       <ul className="flex space-x-4 h-full">
         {[homeMenuItem, ...menuItemsData].map(item => (
           <li key={item.href} className="h-full">
-            <MenuLink menuItem={item} variant="desktop" />
+            <DesktopMenuLink menuItem={item} variant="desktop" />
           </li>
         ))}
       </ul>
