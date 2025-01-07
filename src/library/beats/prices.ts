@@ -2,7 +2,7 @@ import { LicenseType } from '@prisma/client'
 
 import { PublicBeatWithAssets } from '@/types'
 
-const defaultPrices = {
+export const defaultPrices = {
   basic: 2999,
   premium: 4999,
   unlimited: 9999,
