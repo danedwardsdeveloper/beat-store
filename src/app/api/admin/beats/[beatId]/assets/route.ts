@@ -38,7 +38,7 @@ type BeatAssetUpdate = Partial<
   Pick<Beat, 'originalArtworkFileName' | 'duration' | 'taggedMp3' | 'untaggedMp3' | 'wav' | 'stems'>
 >
 
-export interface AdminBeatsAssetsResponsePOST {
+export interface AdminBeatsAssetsPOSTresponse {
   message:
     | BasicMessages
     | 'file missing'
@@ -64,8 +64,8 @@ export interface AdminBeatsAssetsResponsePOST {
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ beatId: string }> },
-): Promise<NextResponse<AdminBeatsAssetsResponsePOST>> {
-  return protectedRoute<AdminBeatsAssetsResponsePOST>(request, 'admin', 'require confirmation', async () => {
+): Promise<NextResponse<AdminBeatsAssetsPOSTresponse>> {
+  return protectedRoute<AdminBeatsAssetsPOSTresponse>(request, 'admin', 'require confirmation', async () => {
     const { beatId } = await params
     if (!beatId) {
       return NextResponse.json({ message: 'params missing' }, { status: HttpStatus.http400badRequest })
