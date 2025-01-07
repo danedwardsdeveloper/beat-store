@@ -1,1 +1,1 @@
-export type Currency = 'GPB' | 'EUR' | 'USD' | 'CAD'
+export type Currency = 'GBP' | 'EUR' | 'USD' | 'CAD'
