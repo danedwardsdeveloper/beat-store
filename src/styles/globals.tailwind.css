@@ -13,7 +13,7 @@
   .button:disabled {
     @apply cursor-not-allowed;
   }
-  input:not([type='hidden']),
+  input:not([type='hidden']):not([type='checkbox']),
   textarea {
     @apply w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-zinc-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6;
   }
