@@ -7,8 +7,8 @@ export default function Artwork({ beat }: { beat: PublicBeatWithAssets }) {
     <Image
       src={beat.assetUrls.artworkFull}
       alt={beat.metaDescription}
-      height={300}
-      width={300}
+      height={650}
+      width={650}
       className="rounded-lg border border-slate-800"
     />
   )
