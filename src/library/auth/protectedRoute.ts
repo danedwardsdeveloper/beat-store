@@ -9,7 +9,7 @@ import logger from '@/library/misc/logger'
 import { CookieName, TokenPayload } from './cookies'
 import { AuthMessages, BasicMessages, HttpStatus, SafeUser } from '@/types'
 
-export default async function protectedRoute<T extends { message: AuthMessages | BasicMessages | string }>(
+export default async function protectedRoute<T extends { message: BasicMessages | AuthMessages | string }>(
   request: NextRequest,
   requiredRole: UserRole | 'bypass authorisation',
   confirmationRequired: 'require confirmation' | 'allow unconfirmed',
