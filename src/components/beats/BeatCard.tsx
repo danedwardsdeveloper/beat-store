@@ -60,8 +60,9 @@ export default function BeatCard({
         <Image
           src={beat.assetUrls.artworkFull}
           alt={beat.metaDescription}
-          height={400}
-          width={400}
+          // ToDo: set sizes
+          height={640}
+          width={640}
           className="rounded shrink-0"
           priority={eagerLoading}
         />
