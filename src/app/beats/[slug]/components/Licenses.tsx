@@ -2,57 +2,82 @@
 
 import { Radio, RadioGroup } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
+import { LicenseType } from '@prisma/client'
 import { useState } from 'react'
+
+import { defaultPrices } from '@/library/beats/prices'
+import { capitalizeFirstLetter } from '@/library/formatting/capitaliseFirstLetter'
+import formatPrice from '@/library/formatting/formatPrice'
 
 import { PublicBeatWithAssets } from '@/types'
 
-const mailingLists = [
-  { id: 1, title: 'Newsletter', description: 'Last message sent an hour ago', users: '621 users' },
-  { id: 2, title: 'Existing customers', description: 'Last message sent 2 weeks ago', users: '1200 users' },
-  { id: 3, title: 'Trial users', description: 'Last message sent 4 days ago', users: '2740 users' },
-]
+type LicenseOptions = {
+  [key in LicenseType]: {
+    id: number
+    description: string
+    price: number
+  }
+}
+
+const licenseOptions: LicenseOptions = {
+  [LicenseType.basic]: {
+    id: 1,
+    description: 'Untagged MP3',
+    price: defaultPrices.basic,
+  },
+  [LicenseType.premium]: {
+    id: 2,
+    description: 'WAV file',
+    price: defaultPrices.premium,
+  },
+  [LicenseType.unlimited]: {
+    id: 3,
+    description: 'WAV file & unlimited usage',
+    price: defaultPrices.unlimited,
+  },
+  [LicenseType.exclusive]: {
+    id: 4,
+    description: 'WAV, stems & exclusive rights',
+    price: defaultPrices.exclusive,
+  },
+}
 
 export default function Licenses({ beat }: { beat: PublicBeatWithAssets }) {
-  const [selectedMailingLists, setSelectedMailingLists] = useState(mailingLists[0])
+  const [selectedLicenseOption, setSelectedLicenseOption] = useState(licenseOptions['premium'])
 
   return (
-    <div className="flex  justify-end">
-      <fieldset className="max-w-3xl">
-        <legend className="text-sm/6 font-semibold text-zinc-200">Select a license</legend>
-        <RadioGroup
-          value={selectedMailingLists}
-          onChange={setSelectedMailingLists}
-          className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4"
-        >
-          {mailingLists.map(mailingList => (
-            <Radio
-              key={mailingList.id}
-              value={mailingList}
-              aria-label={mailingList.title}
-              aria-description={`${mailingList.description} to ${mailingList.users}`}
-              className="group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm focus:outline-none data-[focus]:border-indigo-600 data-[focus]:ring-2 data-[focus]:ring-indigo-600"
-            >
-              <span className="flex flex-1">
-                <span className="flex flex-col">
-                  <span className="block text-sm font-medium text-gray-900">{mailingList.title}</span>
-                  <span className="mt-1 flex items-center text-sm text-gray-500">
-                    {mailingList.description}
-                  </span>
-                  <span className="mt-6 text-sm font-medium text-gray-900">{mailingList.users}</span>
-                </span>
+    <fieldset>
+      <legend className="text-sm/6 font-semibold text-zinc-200">Select a license</legend>
+      <RadioGroup
+        value={selectedLicenseOption}
+        onChange={setSelectedLicenseOption}
+        className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4"
+      >
+        {Object.entries(licenseOptions).map(([type, option]) => (
+          <Radio
+            key={option.id}
+            value={option}
+            aria-label={type}
+            className="group relative flex cursor-pointer rounded-lg border border-zinc-500 bg-white/5 p-4 shadow-sm focus:outline-none data-[focus]:border-indigo-600 data-[focus]:ring-2 data-[focus]:ring-indigo-600 transition-colors duration 300"
+          >
+            <span className="flex flex-1">
+              <span className="flex flex-col">
+                <span className="block text-sm font-medium text-zinc-100">{capitalizeFirstLetter(type)}</span>
+                <span className="mt-1 flex items-center text-sm text-zinc-300">{option.description}</span>
+                <span className="mt-6 text-sm font-medium text-zinc-100">{formatPrice(option.price)}</span>
               </span>
-              <CheckCircleIcon
-                aria-hidden="true"
-                className="size-5 text-indigo-600 group-[&:not([data-checked])]:invisible"
-              />
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-600"
-              />
-            </Radio>
-          ))}
-        </RadioGroup>
-      </fieldset>
-    </div>
+            </span>
+            <CheckCircleIcon
+              aria-hidden="true"
+              className="size-5 text-indigo-600 group-[&:not([data-checked])]:invisible"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-600"
+            />
+          </Radio>
+        ))}
+      </RadioGroup>
+    </fieldset>
   )
 }
