@@ -8,7 +8,7 @@
   }
 
   .button {
-    @apply font-semibold transition-colors duration-300 text-base rounded-md px-3 py-2 text-center shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+    @apply font-semibold transition-colors duration-300 text-base rounded-md px-3 py-2 text-center shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 flex items-center justify-center;
   }
   .button:disabled {
     @apply cursor-not-allowed;
