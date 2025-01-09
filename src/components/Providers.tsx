@@ -7,12 +7,12 @@ import { UiProvider } from '@/providers/ui'
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <AudioProvider>
-      <NotificationsProvider>
-        <UiProvider>
-          <LocalStorageProvider>{children}</LocalStorageProvider>
-        </UiProvider>
-      </NotificationsProvider>
-    </AudioProvider>
+    <LocalStorageProvider>
+      <AudioProvider>
+        <NotificationsProvider>
+          <UiProvider>{children}</UiProvider>
+        </NotificationsProvider>
+      </AudioProvider>
+    </LocalStorageProvider>
   )
 }
