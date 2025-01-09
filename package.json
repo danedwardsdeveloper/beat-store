@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
     "clsx": "^2.1.1",
+    "country-flag-icons": "^1.5.13",
     "form-data": "^4.0.1",
     "jsonwebtoken": "^9.0.2",
     "mailgun.js": "^10.3.0",
