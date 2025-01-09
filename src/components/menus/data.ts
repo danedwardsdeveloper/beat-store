@@ -1,8 +1,8 @@
 import { ComponentType } from 'react'
 
-import { AccountIcon, ShoppingIcon } from '../icons/definitions/MenuIcons'
+import { AccountIcon } from '../icons/definitions/AccountIcon'
+import { CartIcon } from '../icons/definitions/CartIcon'
 
-// Todo: clean up this chaos
 export const homeMenuItem: MenuItem = {
   text: {
     desktop: 'Home',
@@ -31,5 +31,5 @@ export interface MenuItemWithIcon extends MenuItem {
 
 export const iconMenuItems: MenuItemWithIcon[] = [
   { text: { desktop: 'Account', mobile: 'Account' }, icon: AccountIcon, href: '/account' },
-  { text: { desktop: 'Cart', mobile: 'Cart' }, icon: ShoppingIcon, href: '/cart' },
+  { text: { desktop: 'Cart', mobile: 'Cart' }, icon: CartIcon, href: '/cart' },
 ]
