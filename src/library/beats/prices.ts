@@ -14,8 +14,8 @@ function formatPrice(price: number): string {
   const isWholeNumber = dollars % 1 === 0
 
   return isWholeNumber
-    ? `$${dollars.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
-    : `$${dollars.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+    ? `${dollars.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+    : `${dollars.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
 }
 
 export function getPrice(beat: PublicBeatWithAssets, license: LicenseType) {
