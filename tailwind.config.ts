@@ -33,8 +33,9 @@ export default {
       },
       zIndex: {
         'card-interaction': zIndex[10],
-        'audio-player': zIndex[30],
-        'menu-bar': zIndex[40],
+        'audio-player': zIndex[10],
+        'menu-bar': zIndex[20],
+        'currency-panel': zIndex[20],
         notifications: zIndex[50],
       },
       borderColor: {
