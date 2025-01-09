@@ -1,6 +1,8 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
+    "no-unreachable": "error",
+    "no-unreachable/auto-fix": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "@typescript-eslint/no-unused-vars": [
