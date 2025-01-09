@@ -6,10 +6,12 @@ import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 
 import { getPrice } from '@/library/beats/prices'
+import { currencyOptions } from '@/library/misc/currencyOptions'
 
 import PlayPauseIcon from '@/components/icons/PlayPauseIcon'
 
 import { useAudioPlayer } from '@/providers/audio'
+import { useLocalStorage } from '@/providers/localStorage'
 import { useUi } from '@/providers/ui'
 import { PublicBeatWithAssets } from '@/types'
 
@@ -20,6 +22,7 @@ export default function BeatCard({
   beat: PublicBeatWithAssets
   eagerLoading: boolean
 }) {
+  const { selectedCurrency } = useLocalStorage()
   const player = useAudioPlayer(beat)
   const { setShowAudioPlayer } = useUi()
 
@@ -71,8 +74,8 @@ export default function BeatCard({
             onClick={handleClick}
             className={clsx(
               'p-2 rounded-full transition-colors duration-300',
-              'active:bg-black/50 hover:bg-black/20  md:text-zinc-400 md:hover:text-zinc-300', // Hidden unless hover on desktop
-              'text-zinc-300 bg-black/50', // Play button always visible on mobile
+              'active:bg-black/50 hover:bg-black/20  md:text-zinc-400 md:hover:text-zinc-300',
+              'text-zinc-300 bg-black/50',
             )}
           >
             <PlayPauseIcon size="size-14" />
@@ -83,6 +86,7 @@ export default function BeatCard({
         {beat.title}
       </h3>
       <button className="flex w-full p-2 justify-center items-center bg-indigo-800 hover:bg-indigo-900 active:bg-indigo-950 rounded text-zinc-100 border border-indigo-600">
+        {currencyOptions[selectedCurrency].symbol}
         {getPrice(beat, 'basic')}
       </button>
     </Link>
