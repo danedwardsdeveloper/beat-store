@@ -7,6 +7,8 @@ import logger from '@/library/misc/logger'
 import { HttpStatus } from '@/types'
 import { contactFormRequirements, ContactPOSTbody, ContactPOSTresponse } from '@/types'
 
+const SEND_ACTUAL_EMAILS = false
+
 export async function POST(request: Request): Promise<NextResponse<ContactPOSTresponse>> {
   try {
     const { firstName, email, message }: ContactPOSTbody = await request.json()
@@ -41,15 +43,21 @@ export async function POST(request: Request): Promise<NextResponse<ContactPOSTre
         .replace(/\n/g, '<br>'),
     }
 
-    const emailContent = createContactFormNotification({ firstName, email, message })
-    const emailResponse = await sendEmail(emailContent)
-    if (emailResponse.success) {
-      logger.info('Contact form submission:', JSON.stringify(sanitisedData))
-      return NextResponse.json({ message: 'success' }, { status: HttpStatus.http200ok })
-    } else {
-      logger.error('Error sending email to myself')
-      return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
+    if (SEND_ACTUAL_EMAILS) {
+      const emailContent = createContactFormNotification({ firstName, email, message })
+      const emailResponse = await sendEmail(emailContent)
+
+      if (!emailResponse?.success) {
+        logger.error('Error sending email to myself')
+        return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
+      }
     }
+
+    logger.info(
+      SEND_ACTUAL_EMAILS ? 'Email sent: ' : 'Email sending turned off: ', //
+      JSON.stringify(sanitisedData),
+    )
+    return NextResponse.json({ message: 'success' }, { status: HttpStatus.http200ok })
   } catch (error) {
     logger.error('Contact form error:', error)
     return NextResponse.json({ message: 'server error' }, { status: HttpStatus.http500serverError })
