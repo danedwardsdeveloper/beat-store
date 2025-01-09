@@ -15,24 +15,24 @@ export const marketingCopy = {
   },
   pricing: {
     titles: {
-      cardTitle: 'Lifetime membership',
-      sectionTitle: 'Simple no-tricks pricing',
+      cardTitle: 'One-off setup fee',
+      sectionTitle: 'Straightforward pricing',
     },
     intros: {
       cardIntro:
-        'Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis blanditiis repellendus etur quidem assumenda.',
-      sectionIntro: `Distinctio et nulla eum soluta et neque labore quibusdam. Saepe et quasi iusto modi velit ut non voluptas in. Explicabo id ut laborum.`,
+        'Your beat store, your rules. Only pay minimal hosting and transaction fees - no revenue sharing or hidden costs. Built for producers who want to establish their own branded marketplace.',
+      sectionIntro: `Launch your own independent beat store without the hefty marketplace fees. Take control of your music sales and keep more of what you earn.`,
     },
     whatsIncluded: {
       title: "What's included",
       items: [
-        'Private forum access',
-        'Member resources',
-        'Entry to annual conference',
-        'Official member t-shirt',
+        'Custom storefront with your branding',
+        'Smooth shopping experience',
+        'Simple beat management system',
+        'Built-in analytics',
       ],
     },
-    extras: ['Pay once, own it forever', 'Invoices and receipts available for easy company reimbursement'],
-    usdPriceString: '$649',
+    extras: ['Pay once, own it forever', 'From purchase to launch, we handle it all'],
+    usdPrice: '649',
   },
 }
