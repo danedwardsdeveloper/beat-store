@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import CtaButton from '../../CtaButton'
+import CurrencyOptions from '../CurrencyOptions'
 import { homeMenuItem, iconMenuItems, menuItemsData } from '../data'
 import DesktopMenuLink from './DesktopMenuLink'
 import { menuItemStyles } from '@/styles'
@@ -31,6 +32,9 @@ export default function DesktopMenu() {
       <div className="flex items-center space-x-4">
         <CtaButton variant="primary" />
         <ul className="flex gap-x-4">
+          <li>
+            <CurrencyOptions />
+          </li>
           {iconMenuItems.map(item => (
             <li key={item.href}>
               <Link
