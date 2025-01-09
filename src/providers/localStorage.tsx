@@ -9,19 +9,19 @@ import { Currency } from '@/types'
 interface State {
   isExistingUser: boolean
   prefersStaySignedIn: boolean
-  currency: Currency
+  selectedCurrency: Currency
 }
 
 type Action =
   | { type: 'SET_EXISTING_USER'; payload: boolean }
   | { type: 'SET_PREFERS_STAY_SIGNED_IN'; payload: boolean }
-  | { type: 'SET_CURRENCY'; payload: Currency }
+  | { type: 'SET_SELECTED_CURRENCY'; payload: Currency }
   | { type: 'LOAD_STORED_VALUES'; payload: Partial<State> }
 
 const initialState: State = {
   isExistingUser: false,
   prefersStaySignedIn: false,
-  currency: 'USD',
+  selectedCurrency: 'USD',
 }
 
 function reducer(state: State, action: Action): State {
@@ -34,9 +34,9 @@ function reducer(state: State, action: Action): State {
       localStorage.setItem('prefersStaySignedIn', JSON.stringify(action.payload))
       return { ...state, prefersStaySignedIn: action.payload }
 
-    case 'SET_CURRENCY':
-      localStorage.setItem('currency', JSON.stringify(action.payload))
-      return { ...state, currency: action.payload }
+    case 'SET_SELECTED_CURRENCY':
+      localStorage.setItem('selectedCurrency', JSON.stringify(action.payload))
+      return { ...state, selectedCurrency: action.payload }
 
     case 'LOAD_STORED_VALUES':
       return { ...state, ...action.payload }
@@ -51,8 +51,8 @@ interface LocalStorageContextType {
   setIsExistingUser: (value: boolean) => void
   prefersStaySignedIn: boolean
   setPrefersStaySignedIn: (value: boolean) => void
-  currency: Currency
-  setCurrency: (value: Currency) => void
+  selectedCurrency: Currency
+  setSelectedCurrency: (value: Currency) => void
   loaded: boolean
 }
 
@@ -66,7 +66,7 @@ export function LocalStorageProvider({ children }: { children: ReactNode }) {
     try {
       const storedValues: Partial<State> = {}
 
-      const keys: (keyof State)[] = ['isExistingUser', 'prefersStaySignedIn', 'currency']
+      const keys: (keyof State)[] = ['isExistingUser', 'prefersStaySignedIn', 'selectedCurrency']
       keys.forEach(key => {
         const stored = localStorage.getItem(key)
         if (stored) {
@@ -87,11 +87,11 @@ export function LocalStorageProvider({ children }: { children: ReactNode }) {
       setIsExistingUser: value => dispatch({ type: 'SET_EXISTING_USER', payload: value }),
       prefersStaySignedIn: state.prefersStaySignedIn,
       setPrefersStaySignedIn: value => dispatch({ type: 'SET_PREFERS_STAY_SIGNED_IN', payload: value }),
-      currency: state.currency,
-      setCurrency: value => dispatch({ type: 'SET_CURRENCY', payload: value }),
+      selectedCurrency: state.selectedCurrency,
+      setSelectedCurrency: value => dispatch({ type: 'SET_SELECTED_CURRENCY', payload: value }),
       loaded,
     }),
-    [state.isExistingUser, state.prefersStaySignedIn, state.currency, loaded],
+    [state.isExistingUser, state.prefersStaySignedIn, state.selectedCurrency, loaded],
   )
 
   return <LocalStorageContext.Provider value={value}>{children}</LocalStorageContext.Provider>
