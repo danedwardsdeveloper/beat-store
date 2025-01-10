@@ -6,7 +6,7 @@ export const defaultPrices = {
   basic: 2999,
   premium: 4999,
   unlimited: 9999,
-  exclusive: 2999,
+  exclusive: 29999,
 }
 
 function formatPrice(price: number): string {
