@@ -5,10 +5,10 @@ import { createContext, ReactNode, useContext, useEffect, useMemo, useReducer, u
 
 import logger from '@/library/misc/logger'
 
-import { Currency } from '@/types'
+import { Currency, PublicBeatWithAssets } from '@/types'
 
 export interface LocalStorageCartItem {
-  id: string
+  id: PublicBeatWithAssets['id']
   license: LicenseType
 }
 
