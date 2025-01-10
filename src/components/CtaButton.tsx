@@ -1,5 +1,8 @@
+'use client'
+
 import clsx from 'clsx'
-import Link from 'next/link'
+
+import { useNotifications } from '@/providers/notifications'
 
 const variantData = {
   primary: {
@@ -19,12 +22,22 @@ export default function CtaButton({
   variant: 'primary' | 'secondary'
   classes?: string
 }) {
+  const { createNotification } = useNotifications()
   const isPrimary = variant === 'primary'
   const data = variantData[variant]
 
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    createNotification({
+      title: 'Work in progress',
+      message: `I haven't made that part of the site yet!`,
+      level: 'info',
+    })
+  }
+
   return (
-    <Link
-      href={data.href}
+    <button
+      onClick={handleClick}
       className={clsx(
         isPrimary ? 'button-primary' : 'button-secondary', //
         'block w-full',
@@ -32,6 +45,6 @@ export default function CtaButton({
       )}
     >
       {data.text}
-    </Link>
+    </button>
   )
 }
