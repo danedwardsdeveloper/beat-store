@@ -1,9 +1,6 @@
 # Current task
 
-## Currency select
-
-Add the currency option to mobile menu
-Space the menu icons evenly
+1. Signed-out cart functionality
 
 # Other tasks
 
