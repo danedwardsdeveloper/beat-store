@@ -4,7 +4,6 @@ import getPublishedBeats, { GetPublishedBeatsResponse } from '@/library/beats/ge
 import logger from '@/library/misc/logger'
 import { generateBeatMetadata } from '@/library/misc/metadata'
 
-import AddToCartButton from '../components/AddToCartButton'
 import Artwork from './components/Artwork'
 import Description from './components/Description'
 import Licenses from './components/Licenses'
@@ -50,13 +49,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             <Artwork beat={beat} />
           </div>
 
-          <div className="col-span-9 grid grid-cols-1 gap-4">
-            <Licenses beat={beat} />
-          </div>
-
-          <div className="mt-16 max-w-sm mx-auto">
-            <AddToCartButton />
-          </div>
+          <Licenses beat={beat} />
         </div>
       </div>
     </div>
