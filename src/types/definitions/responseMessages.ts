@@ -1,3 +1,4 @@
+// ToDo simple-order has a better version of this with enums
 export type BasicMessages =
   | 'success' //
   | 'server error'
